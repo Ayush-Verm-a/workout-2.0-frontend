@@ -1,23 +1,16 @@
-import React, {useEffect, useState} from "react";
-import ListUserComponent from "../../components/ListUserComponent";
-import CreateUserComponent from "../../components/CreateUserComponent";
+import React, { useEffect, useState } from "react";
+import AddWorkoutComponent from "../../components/AddWorkoutComponent";
 
 const Home = () => {
-    const [message, setMessage] = useState("Loading...");
     const [toggle, setToggle] = useState(false);
 
-    return(
+    return (
         <div className="home__container">
-            <h1>App</h1>
-            <div>
-                <CreateUserComponent />
-            </div>
-            <div>
-                <button onClick={() => setToggle(!toggle)}>Toggle User List</button>
-                {toggle && <ListUserComponent />}
-            </div>
+            <h1>Home</h1>
+            <button onClick={() => setToggle(true)}>Add Workout</button>
+            {toggle && <AddWorkoutComponent />}
         </div>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

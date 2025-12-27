@@ -14,11 +14,10 @@ const LoginComponent = () => {
         AuthService.login(credentials).then((res) => {
             console.log("Login Successful!");
 
-            const basicAuthToken =
-                "Basic " + window.btoa(email + ":" + password);
-            localStorage.setItem("token", basicAuthToken);
+            const token = res.data.accessToken;
+            localStorage.setItem("token", token);
 
-            navigate("/users");
+            navigate("/home");
         });
     };
 
