@@ -14,8 +14,16 @@ class WorkoutService {
         return apiClient.delete("/workouts/" + id);
     }
 
+    getWorkoutById(workoutId) {
+        return apiClient.get("/workouts/" + workoutId);
+    }
+
     getDefinitions() {
         return apiClient.get("/definitions");
+    }
+
+    saveDefinition(definition) {
+        return apiClient.post("/definitions", definition);
     }
 }
 

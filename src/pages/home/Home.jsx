@@ -7,8 +7,8 @@ const Home = () => {
     return (
         <div className="home__container">
             <h1>Home</h1>
-            <button onClick={() => setToggle(true)}>Add Workout</button>
-            {toggle && <AddWorkoutComponent />}
+            <h3>Site Description</h3>
+            <h3>Site Feature Cards</h3>
         </div>
     );
 };

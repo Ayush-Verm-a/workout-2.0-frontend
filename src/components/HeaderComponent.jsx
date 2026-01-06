@@ -16,11 +16,20 @@ const HeaderComponent = () => {
         <div>
             <header>
                 <nav>
-                    <div>User Management App</div>
+                    <div
+                        onClick={() => {
+                            navigate("/");
+                        }}
+                    >
+                        User Management App
+                    </div>
                     <div>
                         <ul>
                             {isAuth && (
                                 <>
+                                    <li>
+                                        <Link to="/feed">Feed</Link>
+                                    </li>
                                     <li>
                                         <Link to="/workouts">My Workouts</Link>
                                     </li>
@@ -28,6 +37,9 @@ const HeaderComponent = () => {
                                         <Link to="/live-workout">
                                             Start Workout
                                         </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/exercises">Exercises</Link>
                                     </li>
                                     <li>
                                         <button onClick={handleLogout}>
