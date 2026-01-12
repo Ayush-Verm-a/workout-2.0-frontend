@@ -112,114 +112,133 @@ const LiveWorkoutComponent = () => {
 
     return (
         <div className="liveworkout__container">
-            <div>
+            <div className="liveworkout__title">
                 <input
                     type="text"
                     value={workoutTitle}
                     onChange={(e) => setWorkoutTitle(e.target.value)}
                 />
-                <h2>{formatTime()}</h2>
+            </div>
+            <div className="liveworkout__row">
                 <div>
-                    {!isActive && seconds === 0 && (
-                        <button onClick={toggleTimer}>Start Workout</button>
-                    )}
-                    {isActive && <button onClick={toggleTimer}>Pause</button>}
-                    {seconds > 0 && !isActive && (
-                        <button onClick={toggleTimer}>Resume</button>
-                    )}
+                    <h2>{formatTime()}</h2>
+                </div>
+                <div>
+                    <label>Total Calories Burned: </label>
+                    <span>{totalCalories}</span>
                 </div>
             </div>
-
-            {seconds > 0 && (
-                <div className="row">
+            <div className="liveworkout__row">
+                {seconds > 0 && (
                     <div>
-                        {activeExercises.map((exercise, index) => (
-                            <div key={index}>
-                                <div>{exercise.name}</div>
-                                <div>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Set</th>
-                                                <th>Weight(kg)</th>
-                                                <th>Reps</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {exercise.sets.map((set, i) => (
-                                                <tr key={i}>
-                                                    <td>{set.setNumber}</td>
-                                                    <td>{set.weight}</td>
-                                                    <td>{set.reps}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-
-                                    <SetInput
-                                        onAdd={(w, r) => addSet(index, w, r)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-
                         <div>
-                            <select id="exerciseSelect">
-                                <option value="">Select Exercise...</option>
-                                {definitions.map((def) => (
-                                    <option key={def.id} value={def.id}>
-                                        {def.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <button
-                                onClick={() => {
-                                    const select =
-                                        document.getElementById(
-                                            "exerciseSelect"
-                                        );
-                                    if (select.value)
-                                        addExerciseToWorkout(select.value);
-                                }}
-                            >
-                                + Add Exercise
-                            </button>
+                            {activeExercises.map((exercise, index) => (
+                                <div key={index} className="liveworkout__setgroup">
+                                    <h2>{exercise.name}</h2>
+                                    <div>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Set</th>
+                                                    <th>Weight(kg)</th>
+                                                    <th>Reps</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {exercise.sets.map((set, i) => (
+                                                    <tr key={i}>
+                                                        <td>{set.setNumber}</td>
+                                                        <td>{set.weight}</td>
+                                                        <td>{set.reps}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+
+                                        <SetInput
+                                            onAdd={(w, r) =>
+                                                addSet(index, w, r)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                    <div>
+                )}
+                <div>
+                    <div className="liveworkout__controlworkout">
+                        {!isActive && seconds === 0 && (
+                            <button onClick={toggleTimer}>Start Workout</button>
+                        )}
+                        {isActive && (
+                            <button onClick={toggleTimer}>Pause</button>
+                        )}
+                        {seconds > 0 && !isActive && (
+                            <button onClick={toggleTimer}>Resume</button>
+                        )}
+                    </div>
+                    {seconds > 0 && (
                         <div>
+                            <div className="liveworkout__addexercise">
+                                <select id="exerciseSelect">
+                                    <option value="">Select Exercise...</option>
+                                    {definitions.map((def) => (
+                                        <option key={def.id} value={def.id}>
+                                            {def.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    onClick={() => {
+                                        const select =
+                                            document.getElementById(
+                                                "exerciseSelect"
+                                            );
+                                        if (select.value)
+                                            addExerciseToWorkout(select.value);
+                                    }}
+                                >
+                                    + Add Exercise
+                                </button>
+                            </div>
                             <div>
-                                <label>Total Calories Burned</label>
-                                <div>{totalCalories}</div>
-
-                                <label>Add Calories</label>
                                 <div>
-                                    <input
-                                        type="number"
-                                        placeholder="e.g. 100"
-                                        value={calorieInput}
-                                        onChange={(e) =>
-                                            setCalorieInput(e.target.value)
-                                        }
-                                    />
+                                    <div>
+                                        <label>Add Calories</label>
+                                        <div>
+                                            <input
+                                                type="number"
+                                                placeholder="e.g. 100"
+                                                value={calorieInput}
+                                                onChange={(e) =>
+                                                    setCalorieInput(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={handleAddCalories}
+                                            >
+                                                + Add
+                                            </button>
+                                        </div>
+                                    </div>
                                     <button
-                                        type="button"
-                                        onClick={handleAddCalories}
+                                        onClick={() => navigate("/workouts")}
                                     >
-                                        + Add
+                                        Cancel Workout
+                                    </button>
+                                    <button onClick={finishWorkout}>
+                                        Finish & Save
                                     </button>
                                 </div>
                             </div>
-                            <button onClick={() => navigate("/workouts")}>
-                                Cancel Workout
-                            </button>
-                            <button onClick={finishWorkout}>
-                                Finish & Save
-                            </button>
                         </div>
-                    </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 };

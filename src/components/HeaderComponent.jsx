@@ -13,52 +13,50 @@ const HeaderComponent = () => {
     };
 
     return (
-        <div>
+        <div className="header__container alfa-slab-one-regular">
             <header>
-                <nav>
-                    <div
-                        onClick={() => {
-                            navigate("/");
-                        }}
-                    >
-                        User Management App
-                    </div>
+                <nav className="header__navbar">
                     <div>
-                        <ul>
-                            {isAuth && (
-                                <>
-                                    <li>
-                                        <Link to="/feed">Feed</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/workouts">My Workouts</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/live-workout">
-                                            Start Workout
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/exercises">Exercises</Link>
-                                    </li>
-                                    <li>
-                                        <button onClick={handleLogout}>
-                                            Logout
-                                        </button>
-                                    </li>
-                                </>
-                            )}
-                            {!isAuth && (
-                                <>
-                                    <li>
-                                        <Link to="/login">Login</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/register">Signup</Link>
-                                    </li>
-                                </>
-                            )}
-                        </ul>
+                        <h2>
+                            <Link to="/" className="header__title">
+                                Workout App
+                            </Link>
+                        </h2>
+                    </div>
+                    <div className="header__menu">
+                        {isAuth && (
+                            <>
+                                <div className="header__menuitem">
+                                    <Link to="/feed">Feed</Link>
+                                </div>
+                                <div className="header__menuitem">
+                                    <Link to="/workouts">My Workouts</Link>
+                                </div>
+                                <div className="header__menuitem">
+                                    <Link to="/live-workout">
+                                        Start Workout
+                                    </Link>
+                                </div>
+                                <div className="header__menuitem">
+                                    <Link to="/exercises">Exercises</Link>
+                                </div>
+                                <div className="header__menuitem">
+                                    <button className="header__authbutton" onClick={handleLogout}>
+                                        Logout
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                        {!isAuth && (
+                            <>
+                                <div className="header__menuitem">
+                                    <Link className="header__authbutton" to="/login">Login</Link>
+                                </div>
+                                <div className="header__menuitem">
+                                    <Link className="header__authbutton" to="/register">Signup</Link>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </nav>
             </header>

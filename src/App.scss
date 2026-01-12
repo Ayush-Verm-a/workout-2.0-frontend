@@ -1,3 +1,76 @@
+$color1: #03A6A1;
+$color2: #FFE3BB;
+$color3: #FFA673;
+$color4: #FF4F0F;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: "Alfa Slab One", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html,
+body {
+    min-height: 100vh;
+    margin: 0;
+    background-color: $color2;
+}
+
+.app {
+    &__container {
+        background-color: $color2;
+    }
+}
+
+.header {
+    &__container {
+        background-color: $color4;
+        padding: 5px 15px;
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    &__navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__title {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    &__menu {
+        display: flex;
+    }
+
+    &__menuitem {
+        margin: 10px;
+        padding: 10px;
+        background-color: $color2;
+
+        a {
+            text-decoration: none;
+            color: $color4;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+        }
+    }
+
+    &__authbutton {
+        color: black !important;
+    }
+}
+
 .feed {
     &__weekdays {
         display: flex;
@@ -17,5 +90,208 @@
 
     &__activecalendarcell {
         border: 1px solid red;
+    }
+}
+
+.alfa-slab-one-regular {
+    font-family: "Alfa Slab One", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.register,
+.login {
+    &__container {
+        display: grid;
+        place-items: center;
+        background-color: $color3;
+        min-height: 100vh;
+    }
+
+    &__row {
+        width: 1100px;
+        height: 650px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        padding: 60px;
+        background-color: $color2;
+    }
+
+    &__form {
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 14px;
+            border: 1px solid #4c4961;
+            border-radius: 8px;
+        }
+
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .primary-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 14px;
+            background-color: $color3;
+        }
+    }
+}
+
+.listworkout {
+    &__container {
+        padding: 20px;
+        margin: 10px;
+        background-color: $color3;
+        border: none;
+        border-radius: 20px;
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr 2fr 2fr 2fr;
+    }
+
+    &__details {
+        cursor: pointer;
+    }
+
+    &__head {
+        margin-bottom: 10px;
+    }
+}
+
+.workoutdetails {
+    &__container {
+        margin: 10px;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: $color3;
+    }
+
+    &__overviewrow {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        margin-bottom: 20px;
+        margin-top: 10px;
+    }
+
+    &__setrow {
+        display: flex;
+        gap: 20px;
+
+        span {
+            min-width: 15px;
+        }
+    }
+
+    &__setgroup {
+        margin-bottom: 10px;
+    }
+}
+
+.exerciselibrary {
+    &__container {
+        padding: 20px;
+        margin: 10px;
+        background-color: $color3;
+        border: none;
+        border-radius: 20px;
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 4fr 6fr;
+    }
+
+    &__musclegroup {
+        margin-bottom: 15px;
+    }
+
+    &__musclelist {
+        padding-left: 10px;
+    }
+}
+
+.feed {
+    &__container {
+        margin: 10px;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: $color3;
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__subheading {
+        margin-bottom: 10px;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 6fr 4fr;
+    }
+}
+
+.liveworkout {
+    &__container {
+        margin: 10px;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: $color3;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 10px;
+    }
+
+    &__setgroup {
+        margin-bottom: 20px;
+    }
+
+    &__controlworkout {
+        margin-bottom: 20px;
+    }
+
+    &__addexercise {
+        margin-bottom: 20px;
     }
 }

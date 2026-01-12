@@ -7,7 +7,7 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post("/auth/register", user);
+        return apiClient.post("/auth/register", user);
     }
 
     logout() {

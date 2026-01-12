@@ -44,18 +44,39 @@ const ListWorkoutComponent = () => {
     return (
         <div className="listworkout__container">
             <div>
-                <h2>History</h2>
+                <h1>Workout History</h1>
             </div>
 
             <div>
+                <div className="listworkout__row listworkout__head">
+                    <div>
+                        <h3>Details</h3>
+                    </div>
+                    <div>
+                        <h3>Workout Name</h3>
+                    </div>
+                    <div>
+                        <h3>Date</h3>
+                    </div>
+                    <div>
+                        <h3>Duration</h3>
+                    </div>
+                </div>
                 {workouts.map((workout) => (
-                    <div
-                        key={workout.id}
-                        onClick={() => navigate(`/workouts/${workout.id}`)}
-                    >
-                        <div>
+                    <div key={workout.id}>
+                        <div className="listworkout__row">
+                            <div
+                                onClick={() =>
+                                    navigate(`/workouts/${workout.id}`)
+                                }
+                                className="listworkout__details"
+                            >
+                                <small>❯</small>
+                            </div>
                             <div>
                                 <h5>{workout.title}</h5>
+                            </div>
+                            <div>
                                 <small>
                                     {formatDate(workout.date)} •{" "}
                                     {new Date(workout.date).toLocaleTimeString(
@@ -66,7 +87,6 @@ const ListWorkoutComponent = () => {
                             </div>
                             <div>
                                 <span>{workout.duration}m</span>
-                                <small>❯</small>
                             </div>
                         </div>
                     </div>

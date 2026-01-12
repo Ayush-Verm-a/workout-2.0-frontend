@@ -23,22 +23,33 @@ const LoginComponent = () => {
 
     return (
         <div className="login__container">
-            <div className="row">
-                <div className="card">
-                    <h3>Login</h3>
+            <div className="login__row">
+                <div className="login__image">
+                    <div className="image__overlay">
+                        <h2>
+                            Breaking PRs, <br /> Building strength
+                        </h2>
+                    </div>
+                </div>
+                <div className="login__form">
+                    <h1>Login to your account</h1>
+                    <div>
+                        Don't have an account?
+                        <Link to="/register">Sign Up</Link>
+                    </div>
                     <div className="card-body">
                         <form>
                             <div className="form-group">
-                                <label>Email</label>
                                 <input
+                                    placeholder="Email"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Password</label>
                                 <input
+                                    placeholder="Enter your password"
                                     type="password"
                                     value={password}
                                     onChange={(e) =>
@@ -47,12 +58,9 @@ const LoginComponent = () => {
                                 />
                             </div>
                         </form>
-                        <button onClick={handleLogin}>Login</button>
-                        <div>
-                            <Link to="/register">
-                                Don't have an account? Sign Up
-                            </Link>
-                        </div>
+                        <button className="primary-btn" onClick={handleLogin}>
+                            Login
+                        </button>
                     </div>
                 </div>
             </div>

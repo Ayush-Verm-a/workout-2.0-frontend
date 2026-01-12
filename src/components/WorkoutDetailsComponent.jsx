@@ -12,6 +12,7 @@ const WorkoutDetailsComponent = () => {
     useEffect(() => {
         WorkoutService.getWorkoutById(id)
             .then((res) => {
+                console.log(res.data);
                 setWorkout(res.data);
                 processData(res.data);
             })
@@ -60,47 +61,51 @@ const WorkoutDetailsComponent = () => {
         <div className="workoutdetails__container">
             <div>
                 <div>
-                    <h2>{workout.title}</h2>
-                    <p>
-                        {dateStr} • {timeStr}
-                    </p>
+                    <button onClick={() => navigate("/workouts")}>
+                        ← Back to History
+                    </button>
+                </div>
+                <div className="workoutdetails__overviewrow">
                     <div>
-                        <div>
-                            <div>{workout.duration}m</div>
-                            <div>Duration</div>
-                        </div>
-                        <div>
-                            <div>{stats.sets}</div>
-                            <div>Sets</div>
-                        </div>
-                        <div>
-                            <div>{stats.volume}</div>
-                            <div>Volume</div>
-                        </div>
+                        <h1>{workout.title}</h1>
+                        <p>
+                            {dateStr} • {timeStr}
+                        </p>
+                    </div>
+                    <div>
+                        <div>Duration</div>
+                        <div>{workout.duration}m</div>
+                    </div>
+                    <div>
+                        <div>Total Sets</div>
+                        <div>{stats.sets}</div>
+                    </div>
+                    <div>
+                        <div>Volume</div>
+                        <div>{stats.volume} kg</div>
                     </div>
                 </div>
             </div>
             {Object.keys(groupedExercises).map((exerciseName, index) => (
-                <div key={index}>
-                    <div>{exerciseName}</div>
-                    <ul>
+                <div key={index} className="workoutdetails__setgroup">
+                    <div>
+                        <h2>{exerciseName}</h2>
+                    </div>
+                    <div>
                         {groupedExercises[exerciseName].map((set, i) => (
-                            <li key={set.id || i}>
-                                <span>{i + 1}</span>
-                                <div>
-                                    <span>{set.weight} kg</span>
-                                    <span>x</span>
-                                    <span>{set.reps}</span>
-                                </div>
-                            </li>
+                            <div
+                                key={set.id || i}
+                                className="workoutdetails__setrow"
+                            >
+                                <span>{i + 1}.</span>
+                                <span>{set.weight} kg</span>
+                                <span>x</span>
+                                <span>{set.reps}</span>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             ))}
-
-            <button onClick={() => navigate("/workouts")}>
-                ← Back to History
-            </button>
         </div>
     );
 };

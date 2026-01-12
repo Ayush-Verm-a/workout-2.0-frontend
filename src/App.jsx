@@ -13,22 +13,24 @@ import FeedComponent from "./components/FeedComponent";
 
 function App() {
     return (
-        <BrowserRouter>
-            <HeaderComponent />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginComponent />} />
-                <Route path="/register" element={<RegisterComponent />} />
+        <div className="app__container">
+            <BrowserRouter>
+                <HeaderComponent />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<LoginComponent />} />
+                    <Route path="/register" element={<RegisterComponent />} />
 
-                <Route path="/home" element={<Home />} />
-                <Route path="/workouts" element={<ListWorkoutComponent />} />
-                <Route path="/add-workout" element={<AddWorkoutComponent />} />
-                <Route path="/live-workout" element={<LiveWorkoutComponent />} />
-                <Route path="/exercises" element={<ExerciseLibraryComponent />} />
-                <Route path="/workouts/:id" element={<WorkoutDetailsComponent />} />
-                <Route path="/feed" element={<FeedComponent />} />
-            </Routes>
-        </BrowserRouter>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/workouts" element={<ListWorkoutComponent />} />
+                    <Route path="/add-workout" element={<AddWorkoutComponent />} />
+                    <Route path="/live-workout" element={<LiveWorkoutComponent />} />
+                    <Route path="/exercises" element={<ExerciseLibraryComponent />} />
+                    <Route path="/workouts/:id" element={<WorkoutDetailsComponent />} />
+                    <Route path="/feed" element={<FeedComponent />} />
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
 }
 

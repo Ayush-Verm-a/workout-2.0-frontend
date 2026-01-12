@@ -19,11 +19,11 @@ const FeedComponent = () => {
 
     const generateCalendarDays = () => {
         const today = new Date();
-        const weeks = [[], [], [], [], []];
+        const weeks = [[], [], [], [], [], []];
 
         const endDate = new Date(today);
         const startDate = new Date(today);
-        startDate.setDate(today.getDate() - 27);
+        startDate.setDate(today.getDate() - 29);
 
         let weekDay = startDate.getDay();
         let week = 0;
@@ -54,63 +54,82 @@ const FeedComponent = () => {
 
     return (
         <div className="feed__container">
-            <h2>Feed</h2>
+            <h1>Feed</h1>
             <div>
                 <div>
-                    <h5>Activity</h5>
-                    <h3>
-                        Workouts Last 30 Days
-                        <span>
-                            {
-                                workouts.filter((w) => {
-                                    const d = new Date(w.date);
-                                    const now = new Date();
-                                    return (
-                                        (now - d) / (1000 * 60 * 60 * 24) <= 30
-                                    );
-                                }).length
-                            }{" "}
-                            workouts
-                        </span>
-                    </h3>
-                    <div className="feed__weekdays feed__calendar">
-                        {weekDays.map((day) => (
-                            <div className="feed__calendarcell" key={day}>{day}</div>
-                        ))}
-                    </div>
-                    <div>
-                        {calendarDays.map((calweek, wIndex) => (
-                            <div className="feed__calendar" key={wIndex}>
-                                {calweek.length > 0 &&
-                                    calweek.map((date, index) => {
-                                        if (date !== null) {
-                                            const isToday =
-                                                new Date().toDateString() ===
-                                                date.toDateString();
-                                            const active = hasWorkout(date);
-                                            const dayNum = String(
-                                                date.getDate()
-                                            ).padStart(2, "0");
-                                            return (
-                                                <div
-                                                    className={`feed__calendarcell ${
-                                                        active ? "feed__activecalendarcell" : ""
-                                                    }`}
-                                                    key={index}
-                                                >
-                                                    <div>{dayNum}</div>
-                                                </div>
-                                            );
-                                        }
+                    <div className="feed__subheading">
+                        <h3>Activity</h3>
+                        <h3>
+                            Last 30 Days:{" "}
+                            <span>
+                                {
+                                    workouts.filter((w) => {
+                                        const d = new Date(w.date);
+                                        const now = new Date();
                                         return (
-                                            <div
-                                                className="feed__calendarcell"
-                                                key={index}
-                                            ></div>
+                                            (now - d) / (1000 * 60 * 60 * 24) <=
+                                            30
                                         );
-                                    })}
+                                    }).length
+                                }{" "}
+                                workouts
+                            </span>
+                        </h3>
+                    </div>
+                    <div className="feed__row">
+                        <div>
+                            <div className="feed__weekdays feed__calendar">
+                                {weekDays.map((day) => (
+                                    <div
+                                        className="feed__calendarcell"
+                                        key={day}
+                                    >
+                                        {day}
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                            <div>
+                                {calendarDays.map((calweek, wIndex) => (
+                                    <div
+                                        className="feed__calendar"
+                                        key={wIndex}
+                                    >
+                                        {calweek.length > 0 &&
+                                            calweek.map((date, index) => {
+                                                if (date !== null) {
+                                                    const isToday =
+                                                        new Date().toDateString() ===
+                                                        date.toDateString();
+                                                    const active =
+                                                        hasWorkout(date);
+                                                    const dayNum = String(
+                                                        date.getDate()
+                                                    ).padStart(2, "0");
+                                                    return (
+                                                        <div
+                                                            className={`feed__calendarcell ${
+                                                                active
+                                                                    ? "feed__activecalendarcell"
+                                                                    : ""
+                                                            }`}
+                                                            key={index}
+                                                        >
+                                                            <div>{dayNum}</div>
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <div
+                                                        className="feed__calendarcell"
+                                                        key={index}
+                                                    ></div>
+                                                );
+                                            })}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div></div>
                     </div>
                 </div>
             </div>
