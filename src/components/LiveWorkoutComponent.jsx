@@ -1,18 +1,30 @@
-import { duration } from "@mui/material";
-import { addListener } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WorkoutService from "../services/WorkoutService";
-import { internal_createExtendSxProp } from "@mui/material/zero-styled";
+import "../styles/live-workout-style.scss";
+import {
+    Dumbbell,
+    Flame,
+    Pause,
+    Play,
+    Plus,
+    Save,
+    Square,
+    Timer,
+    Trash2,
+    X,
+} from "lucide-react";
 
 const LiveWorkoutComponent = () => {
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
     const [definitions, setDefinitions] = useState([]);
     const [workoutTitle, setWorkoutTitle] = useState("My Workout");
     const [activeExercises, setActiveExercises] = useState([]);
     const [totalCalories, setTotalCalories] = useState(0);
     const [calorieInput, setCalorieInput] = useState("");
+    const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -24,15 +36,15 @@ const LiveWorkoutComponent = () => {
 
     useEffect(() => {
         let interval = null;
-        if (isActive) {
+        if (isActive && !isPaused) {
             interval = setInterval(() => {
                 setSeconds((seconds) => seconds + 1);
             }, 1000);
-        } else if (!isActive && seconds != 0) {
+        } else {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    });
+    }, [isActive, isPaused]);
 
     const formatTime = () => {
         const getSeconds = `0${seconds % 60}`.slice(-2);
@@ -44,7 +56,12 @@ const LiveWorkoutComponent = () => {
     };
 
     const toggleTimer = () => {
-        setIsActive(!isActive);
+        if (!isActive) {
+            setIsActive(true);
+            setIsPaused(false);
+        } else {
+            setIsPaused(!isPaused);
+        }
     };
 
     const addSet = (exerciseIndex, weight, reps) => {
@@ -112,17 +129,207 @@ const LiveWorkoutComponent = () => {
 
     return (
         <div className="liveworkout__container">
-            <div className="liveworkout__title">
-                <input
-                    type="text"
-                    value={workoutTitle}
-                    onChange={(e) => setWorkoutTitle(e.target.value)}
-                />
-            </div>
-            <div className="liveworkout__row">
-                <div>
-                    <h2>{formatTime()}</h2>
+            <div className="liveworkout__header">
+                <div className="headerleft">
+                    <div className="headerlefttitle">
+                        <p>Duration</p>
+                        <div className="timer">
+                            <Timer />
+                            {formatTime()}
+                        </div>
+                    </div>
+                    <div></div>
+                    <div className="headerlefttitle">
+                        <p>Total Calories</p>
+                        <div className="calories">
+                            <Flame />
+                            <span>{totalCalories}</span>
+                        </div>
+                    </div>
                 </div>
+                <div className="headerright">
+                    {!isActive ? (
+                        <button onClick={toggleTimer} className="playbtn1">
+                            <Play /> Start
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                onClick={toggleTimer}
+                                className={`playpausebtn ${isPaused ? "ispaused" : "isnotpaused"}`}
+                            >
+                                {isPaused ? (
+                                    <>
+                                        <Play /> Resume
+                                    </>
+                                ) : (
+                                    <>
+                                        <Pause /> Pause
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                onClick={finishWorkout}
+                                className="finishbtn"
+                            >
+                                <Save /> Finish
+                            </button>
+                        </>
+                    )}
+                    {isActive && (
+                        <button
+                            onClick={() => navigate("/workouts")}
+                            title="Cancel Workout"
+                            className="cancelbtn"
+                        >
+                            <Square />
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            <div className="liveworkout__body">
+                <div className="bodytitle">
+                    <label>Session Title</label>
+                    <input
+                        type="text"
+                        value={workoutTitle}
+                        onChange={(e) => setWorkoutTitle(e.target.value)}
+                    />
+                </div>
+
+                {activeExercises.length === 0 && (
+                    <div className="bodynoexercise">
+                        <div className="noexerciseicon">
+                            <Dumbbell />
+                        </div>
+                        <h3 className="noexercisetitle">Ready to sweat?</h3>
+                        <p className="noexercisebody">
+                            Start your timer and add your first exercise.
+                        </p>
+                        <button
+                            onClick={() => setIsExerciseModalOpen(true)}
+                            className="addexercisebtn"
+                        >
+                            <Plus /> Add Exercise
+                        </button>
+                    </div>
+                )}
+
+                <div className="activeexercises">
+                    {activeExercises.map((exercise, exerciseIndex) => (
+                        <div key={exerciseIndex} className="singleexercise">
+                            <div className="exercisecontainer">
+                                <h3 className="exercisetitle">
+                                    <span>
+                                        {exercise.name
+                                            .substring(0, 2)
+                                            .toUpperCase()}
+                                    </span>
+                                    {exercise.name}
+                                </h3>
+
+                                <div className="exercisecontrol">
+                                    <div className="calorie">
+                                        <Flame />
+                                        <input type="number" />
+                                        <span>cal</span>
+                                    </div>
+                                    <div className="divider"></div>
+                                    <button className="removebtn">
+                                        <Trash2 />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="exercisebody">
+                                <div className="settitle">
+                                    <div className="setindex">Set</div>
+                                    <div className="setkg">kg</div>
+                                    <div className="setrep">Reps</div>
+                                    <div className="setremove"></div>
+                                </div>
+                                <div className="setbody">
+                                    {exercise.sets.map((set, index) => (
+                                        <div className="singleset" key={index}>
+                                            <div className="singlesetindex">
+                                                <span>{index + 1}</span>
+                                            </div>
+                                            <div className="singlesetkgrep">
+                                                <input
+                                                    type="number"
+                                                    placeholder="0"
+                                                />
+                                            </div>
+                                            <div className="singlesetkgrep">
+                                                <input
+                                                    type="number"
+                                                    placeholder="0"
+                                                />
+                                            </div>
+                                            <div className="singlesetremove">
+                                                <button>
+                                                    <X />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="addset">
+                                    <Plus /> Add Set
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {activeExercises.length > 0 && (
+                    <div className="addbtncontainer">
+                        <button className="addexercisebtn">
+                            <Plus /> Add Another Exercise
+                        </button>
+                    </div>
+                )}
+            </div>
+            {isExerciseModalOpen && (
+                <div className="liveworkout__exercisemodal">
+                    <div className="modalcontainer">
+                        <div className="modaltop">
+                            <h3>Select Exercise</h3>
+                            <button
+                                onClick={() => setIsExerciseModalOpen(false)}
+                            >
+                                <X />
+                            </button>
+                        </div>
+                        <div className="modalbody">
+                            <div className="exerciselist">
+                                {definitions.map((ex) => (
+                                    <button
+                                        key={ex.id}
+                                        onClick={() =>
+                                            addExerciseToWorkout(ex.id)
+                                        }
+                                    >
+                                        {ex.name} <Plus />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="modalfooter">
+                            <button
+                                onClick={() => setIsExerciseModalOpen(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="liveworkout__row">
+                {/* <div>
+                    <h2>{formatTime()}</h2>
+                </div> */}
                 <div>
                     <label>Total Calories Burned: </label>
                     <span>{totalCalories}</span>
@@ -133,7 +340,10 @@ const LiveWorkoutComponent = () => {
                     <div>
                         <div>
                             {activeExercises.map((exercise, index) => (
-                                <div key={index} className="liveworkout__setgroup">
+                                <div
+                                    key={index}
+                                    className="liveworkout__setgroup"
+                                >
                                     <h2>{exercise.name}</h2>
                                     <div>
                                         <table>
@@ -193,7 +403,7 @@ const LiveWorkoutComponent = () => {
                                     onClick={() => {
                                         const select =
                                             document.getElementById(
-                                                "exerciseSelect"
+                                                "exerciseSelect",
                                             );
                                         if (select.value)
                                             addExerciseToWorkout(select.value);
@@ -213,7 +423,7 @@ const LiveWorkoutComponent = () => {
                                                 value={calorieInput}
                                                 onChange={(e) =>
                                                     setCalorieInput(
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                             />

@@ -10,25 +10,28 @@ import LiveWorkoutComponent from "./components/LiveWorkoutComponent";
 import ExerciseLibraryComponent from "./components/ExerciseLibraryComponent";
 import WorkoutDetailsComponent from "./components/WorkoutDetailsComponent";
 import FeedComponent from "./components/FeedComponent";
+import Sidebar from "./components/Sidebar";
 
 function App() {
     return (
         <div className="app__container">
             <BrowserRouter>
-                <HeaderComponent />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<LoginComponent />} />
-                    <Route path="/register" element={<RegisterComponent />} />
+                <Sidebar />
+                <main className="app__body">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<LoginComponent />} />
+                        <Route path="/register" element={<RegisterComponent />} />
 
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/workouts" element={<ListWorkoutComponent />} />
-                    <Route path="/add-workout" element={<AddWorkoutComponent />} />
-                    <Route path="/live-workout" element={<LiveWorkoutComponent />} />
-                    <Route path="/exercises" element={<ExerciseLibraryComponent />} />
-                    <Route path="/workouts/:id" element={<WorkoutDetailsComponent />} />
-                    <Route path="/feed" element={<FeedComponent />} />
-                </Routes>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/workouts" element={<ListWorkoutComponent />} />
+                        <Route path="/add-workout" element={<AddWorkoutComponent />} />
+                        <Route path="/live-workout" element={<LiveWorkoutComponent />} />
+                        <Route path="/exercises" element={<ExerciseLibraryComponent />} />
+                        <Route path="/workouts/:id" element={<WorkoutDetailsComponent />} />
+                        <Route path="/feed" element={<FeedComponent />} />
+                    </Routes>
+                </main>
             </BrowserRouter>
         </div>
     );

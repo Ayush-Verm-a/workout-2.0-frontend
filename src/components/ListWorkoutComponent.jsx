@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import { useNavigate } from "react-router-dom";
+import { Calendar, Clock, Flame, Trash2 } from "lucide-react";
 
 const ListWorkoutComponent = () => {
     const [workouts, setWorkouts] = useState([]);
@@ -14,9 +15,10 @@ const ListWorkoutComponent = () => {
         WorkoutService.getAllWorkouts()
             .then((res) => {
                 const sorted = res.data.sort(
-                    (a, b) => new Date(b.date) - new Date(a.date)
+                    (a, b) => new Date(b.date) - new Date(a.date),
                 );
                 setWorkouts(sorted);
+                console.log(sorted);
             })
             .catch((error) => {
                 console.log(error);
@@ -47,59 +49,65 @@ const ListWorkoutComponent = () => {
                 <h1>Workout History</h1>
             </div>
 
-            <div>
+            <div className="listworkout__subcontainer">
                 <div className="listworkout__row listworkout__head">
-                    <div>
-                        <h3>Details</h3>
-                    </div>
-                    <div>
-                        <h3>Workout Name</h3>
-                    </div>
-                    <div>
-                        <h3>Date</h3>
-                    </div>
-                    <div>
-                        <h3>Duration</h3>
-                    </div>
-                </div>
-                {workouts.map((workout) => (
-                    <div key={workout.id}>
-                        <div className="listworkout__row">
-                            <div
-                                onClick={() =>
-                                    navigate(`/workouts/${workout.id}`)
-                                }
-                                className="listworkout__details"
-                            >
-                                <small>❯</small>
-                            </div>
-                            <div>
-                                <h5>{workout.title}</h5>
-                            </div>
-                            <div>
-                                <small>
-                                    {formatDate(workout.date)} •{" "}
-                                    {new Date(workout.date).toLocaleTimeString(
-                                        [],
-                                        { hour: "2-digit", minute: "2-digit" }
-                                    )}
-                                </small>
-                            </div>
-                            <div>
-                                <span>{workout.duration}m</span>
-                            </div>
+                    {workouts.length == 0 ? (
+                        <div className="listworkout__noworkout">
+                            No workouts logged yet. Start your journey today!
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ) : (
+                        workouts.map((workout) => (
+                            <div
+                                key={workout.id}
+                                className="listworkout__workoutrow"
+                            >
+                                <div className="listworkout__workoutdata">
+                                    <div className="listworkout__workoutdatahead">
+                                        <span>
+                                            {workout.title.substring(0, 3)}
+                                        </span>
+                                    </div>
 
-            {workouts.length === 0 && (
-                <div>
-                    <p>No workouts yet.</p>
+                                    <div className="listworkout__workoutdatabody">
+                                        <h3 className="">{workout.title}</h3>
+                                        <div className="listworkout__workoutdatabodycontainer">
+                                            <span>
+                                                <Calendar />
+                                                {new Date(
+                                                    workout.date,
+                                                ).toLocaleDateString()}
+                                            </span>
+                                            <span>
+                                                <Clock />
+                                                {workout.duration} min
+                                            </span>
+                                            <span>
+                                                <Flame />
+                                                {workout.caloriesBurned} cal
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    title="Delete Workout"
+                                    className="listworkout__deletebtn"
+                                ><Trash2 /></button>
+                            </div>
+                        ))
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 };
 
 export default ListWorkoutComponent;
+
+{
+    /* <div
+    onClick={() => navigate(`/workouts/${workout.id}`)}
+    className="listworkout__details"
+>
+    <small>❯</small>
+</div>; */
+}
