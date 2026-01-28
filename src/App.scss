@@ -961,34 +961,6 @@ button {
     }
 }
 
-.exerciselibrary {
-    &__container {
-        padding: 20px;
-        margin: 10px;
-        background-color: $color3;
-        border: none;
-        border-radius: 20px;
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-    }
-
-    &__row {
-        display: grid;
-        grid-template-columns: 4fr 6fr;
-    }
-
-    &__musclegroup {
-        margin-bottom: 15px;
-    }
-
-    &__musclelist {
-        padding-left: 10px;
-    }
-}
-
 .feed {
     &__container {
         padding: 20px;

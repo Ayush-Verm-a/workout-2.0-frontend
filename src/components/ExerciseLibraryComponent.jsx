@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
+import "../styles/exercise-library-style.scss";
+import { ChevronRight, Info, Search, Trophy, Zap } from "lucide-react";
 
 const ExerciseLibraryComponent = () => {
+    const categories = ["All", "Strength", "Cardio", "HIIT", "Stability"];
+    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [searchTerm, setSearchTerm] = useState("");
+
     const [exercises, setExercises] = useState([]);
 
     const [name, setName] = useState("");
@@ -21,6 +27,15 @@ const ExerciseLibraryComponent = () => {
     useEffect(() => {
         loadExercises();
     }, []);
+
+    const filteredExercises = exercises.filter((ex) => {
+        const matchesSearch =
+            ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ex.muscleGroup.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesCategory = selectedCategory === "All" || false;
+        return matchesSearch && matchesCategory;
+    });
 
     const handleAdd = (e) => {
         e.preventDefault();
@@ -73,65 +88,70 @@ const ExerciseLibraryComponent = () => {
 
     return (
         <div className="exerciselibrary__container">
-            <h1>Exercise Library</h1>
-            <div className="exerciselibrary__row">
-                <div>
-                    {Object.keys(sortedExercises).map((muscle) => (
-                        <div className="exerciselibrary__musclegroup">
-                            <h2>{muscle}</h2>
-                            <div className="exerciselibrary__musclelist">
-                                {sortedExercises[muscle].map((ex) => (
-                                    <div key={ex.id}>{ex.name}</div>
-                                ))}
-                            </div>
-                        </div>
+            <header className="exerciselibrary__header">
+                <h2>Exercise Library</h2>
+                <p>Explore exercises to build your perfect routine.</p>
+            </header>
+
+            <div className="exerciselibrary__search">
+                <div className="librarysearch">
+                    <Search />
+                    <input
+                        type="text"
+                        placeholder="Search by name or muscle group..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="librarycategory">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            className={`${selectedCategory === cat ? "selected" : "notselected"}`}
+                            onClick={() => setSelectedCategory(cat)}
+                        >
+                            {cat}
+                        </button>
                     ))}
                 </div>
-                <div>
-                    <div>Add Custom Exercise</div>
-                    <div>
-                        {message && <div>{message}</div>}
-                        <form>
-                            <div>
-                                <input
-                                    type="text"
-                                    placeholder="Exercise Name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <select
-                                    value={muscleGroup}
-                                    onChange={(e) =>
-                                        setMuscleGroup(e.target.value)
-                                    }
-                                >
-                                    <option value="">
-                                        Select Muscle Group...
-                                    </option>
-                                    <option value="Chest">Chest</option>
-                                    <option value="Back">Back</option>
-                                    <option value="Legs">Legs</option>
-                                    <option value="Arms">Arms</option>
-                                    <option value="Core">Core</option>
-                                    <option value="Cardio">Cardio</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <button
-                                    onClick={(e) => {
-                                        handleAdd(e);
-                                    }}
-                                >
-                                    + Add to Library
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
+
+            <div className="exerciselibrary__body">
+                {filteredExercises.map((exercise) => (
+                    <div key={exercise.id} className="exercisecard">
+                        <div className="cardtop">
+                            <div className="cardicon">
+                                <Zap className={`${"iconemerald"}`} />
+                            </div>
+                            <span className={`${"advanced"}`}>Difficulty</span>
+                        </div>
+                        <h3 className="cardtitle">{exercise.name}</h3>
+                        <p className="cardsubtitle">{exercise.muscleGroup}</p>
+                        <p className="carddesc">Description</p>
+
+                        <div className="cardbottom">
+                            <span>
+                                <Trophy /> Type
+                            </span>
+                            <button>
+                                View Details <ChevronRight />
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {filteredExercises.length === 0 && (
+                <div className="exerciselibrary__nomatch">
+                    <div className="nomatchicon">
+                        <Info />
+                    </div>
+                    <h3 className="nomatchtitle">No exercises found</h3>
+                    <p className="nomatchsubtitle">
+                        Try adjusting your seach or filters.
+                    </p>
+                </div>
+            )}
         </div>
     );
 };
