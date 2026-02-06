@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
+import "../styles/sidebar-style.scss";
 
 const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
     return (

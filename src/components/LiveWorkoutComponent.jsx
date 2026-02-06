@@ -21,10 +21,10 @@ const LiveWorkoutComponent = () => {
     const [isActive, setIsActive] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [definitions, setDefinitions] = useState([]);
-    const [workoutTitle, setWorkoutTitle] = useState("My Workout");
+    const [workoutTitle, setWorkoutTitle] = useState("New Workout");
     const [activeExercises, setActiveExercises] = useImmer([]);
     const [totalCalories, setTotalCalories] = useState(0);
-    const [calorieInput, setCalorieInput] = useState("");
+    const [calories, setCalories] = useState([]);
     const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
 
     const navigate = useNavigate();
@@ -101,6 +101,10 @@ const LiveWorkoutComponent = () => {
             setActiveExercises((draft) => {
                 draft.push({ definitionId: def.id, name: def.name, sets: [] });
             });
+
+            const newCalories = [...calories];
+            newCalories.push(0);
+            setCalories(newCalories);
         }
 
         setIsExerciseModalOpen(false);
@@ -110,6 +114,13 @@ const LiveWorkoutComponent = () => {
         setActiveExercises((draft) => {
             draft.splice(exerciseIndex, 1);
         });
+
+        const num = calories[exerciseIndex];
+        setTotalCalories((prevTotal) => prevTotal - num);
+        const newCalories = [...calories]
+        newCalories.splice(exerciseIndex, 1);
+        console.log(newCalories);
+        setCalories(newCalories);
     };
 
     const finishWorkout = () => {
@@ -144,11 +155,16 @@ const LiveWorkoutComponent = () => {
             .catch((err) => console.log(err));
     };
 
-    const handleAddCalories = (e) => {
+    const handleAddCalories = (e, exerciseIndex) => {
         const val = parseInt(e.target.value);
 
-        if (!isNaN(val) && val > 0) {
-            setTotalCalories((prevTotal) => prevTotal + val);
+        if (!isNaN(val) && val >= 0) {
+            setTotalCalories(
+                (prevTotal) => prevTotal - calories[exerciseIndex] + val,
+            );
+            const newCalories = [...calories];
+            newCalories[exerciseIndex] = val;
+            setCalories(newCalories);
         }
     };
 
@@ -158,7 +174,8 @@ const LiveWorkoutComponent = () => {
         setIsPaused(false);
         setActiveExercises([]);
         setTotalCalories(0);
-        setWorkoutTitle("My Workout");
+        setCalories([]);
+        setWorkoutTitle("New Workout");
     };
 
     return (
@@ -268,8 +285,12 @@ const LiveWorkoutComponent = () => {
                                         <Flame />
                                         <input
                                             type="number"
+                                            value={calories[exerciseIndex]}
                                             onChange={(e) =>
-                                                handleAddCalories(e)
+                                                handleAddCalories(
+                                                    e,
+                                                    exerciseIndex,
+                                                )
                                             }
                                         />
                                         <span>cal</span>

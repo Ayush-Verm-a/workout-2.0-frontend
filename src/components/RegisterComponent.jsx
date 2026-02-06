@@ -1,18 +1,18 @@
 import { useState } from "react";
 import AuthService from "../services/AuthService";
 import { Link, useNavigate } from "react-router-dom";
+import { Activity, ArrowRight, Lock, Mail, UserIcon } from "lucide-react";
+import "../styles/login-style.scss";
 
 const RegisterComponent = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
-        const fullName = `${firstName} ${lastName}`.trim();
-        const user = { name: fullName, email, password };
+        const user = { name: userName, email, password };
 
         AuthService.register(user)
             .then((res) => {
@@ -24,69 +24,66 @@ const RegisterComponent = () => {
 
     return (
         <div className="register__container">
-            <div className="register__row">
-                <div className="register__image">
-                    <div className="image__overlay">
-                        <h2>
-                            Breaking PRs, <br /> Building strength
-                        </h2>
+            <div className="bg1" />
+            <div className="bg2" />
+            <div className="authbody">
+                <div className="bodytop">
+                    <div className="icon">
+                        <Activity />
                     </div>
+                    <h1 className="topheader">Workout App</h1>
+                    <p className="topcopy">Start your fitness journey today.</p>
                 </div>
-                <div className="register__form">
-                    <h1>Create an account</h1>
-                    <div>
-                        Already have an account?
-                        <Link to="/login">Login</Link>
+                <form className="bodycred">
+                    <div className="credcontainer">
+                        <label>Full Name</label>
+                        <div className="cred">
+                            <UserIcon />
+                            <input
+                                type="text"
+                                value={userName}
+                                placeholder="John Doe"
+                                onChange={(e) => setUserName(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="card-body">
-                        <form>
-                            <div className="form-group">
-                                <div className="name-row">
-                                    <input
-                                        placeholder="First name"
-                                        type="text"
-                                        value={firstName}
-                                        onChange={(e) =>
-                                            setFirstName(e.target.value)
-                                        }
-                                    />
-                                    <input
-                                        placeholder="Last name"
-                                        type="text"
-                                        value={lastName}
-                                        onChange={(e) =>
-                                            setLastName(e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </div>
+                    <div className="credcontainer">
+                        <label>Email</label>
+                        <div className="cred">
+                            <Mail />
+                            <input
+                                type="email"
+                                value={email}
+                                placeholder="your@example.com"
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="credcontainer">
+                        <label>Password</label>
+                        <div className="cred">
+                            <Lock />
+                            <input
+                                type="password"
+                                value={password}
+                                placeholder="*********"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <button className="auth-btn" onClick={handleRegister}>
+                        Create Account
+                        <ArrowRight />
+                    </button>
+                </form>
 
-                            <div className="form-group">
-                                <input
-                                    placeholder="Email"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    placeholder="Enter your password"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <button
-                                className="primary-btn"
-                                onClick={handleRegister}
-                            >
-                                Register
-                            </button>
-                        </form>
-                    </div>
+                <div className="bodybottom">
+                    <p className="bottomcopy">
+                        Already have an account?{" "}
+                        <button onClick={() => navigate("/login")}>
+                            Sign In
+                        </button>
+                    </p>
                 </div>
             </div>
         </div>
