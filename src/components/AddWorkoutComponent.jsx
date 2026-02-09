@@ -15,7 +15,6 @@ const AddWorkoutComponent = () => {
 
         WorkoutService.saveWorkout(workout)
             .then((res) => {
-                console.log(res.data);
                 navigate("/workouts");
             })
             .catch((error) => {

@@ -2,27 +2,26 @@ import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, Flame, Trash2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ListWorkoutComponent = () => {
-    const [workouts, setWorkouts] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { isAuthenticated } = useSelector((store) => store.user);
+    const { workouts } = useSelector((store) => store.workout);
 
     useEffect(() => {
-        getWorkouts();
-    }, []);
+        if (!isAuthenticated) {
+            navigate("/home");
+        }
+        if (!workouts || workouts.length === 0) {
+            dispatch(WorkoutService.getAllWorkouts());
+        }
+    }, [dispatch, isAuthenticated]);
 
     const getWorkouts = () => {
-        WorkoutService.getAllWorkouts()
-            .then((res) => {
-                const sorted = res.data.sort(
-                    (a, b) => new Date(b.date) - new Date(a.date),
-                );
-                setWorkouts(sorted);
-                console.log(sorted);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        dispatch(WorkoutService.getAllWorkouts());
     };
 
     const formatDate = (dateString) => {
@@ -91,7 +90,9 @@ const ListWorkoutComponent = () => {
                                 <button
                                     title="Delete Workout"
                                     className="listworkout__deletebtn"
-                                ><Trash2 /></button>
+                                >
+                                    <Trash2 />
+                                </button>
                             </div>
                         ))
                     )}

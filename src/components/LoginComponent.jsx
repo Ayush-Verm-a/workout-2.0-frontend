@@ -1,27 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
 import { useNavigate, Link } from "react-router-dom";
 import { Activity, ArrowRight, Lock, Mail, UserIcon } from "lucide-react";
 import "../styles/login-style.scss";
+import { useDispatch, useSelector } from "react-redux";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isAuthenticated, user } = useSelector((store) => store.user);
 
     const handleLogin = (e) => {
         e.preventDefault();
         const credentials = { email, password };
 
-        AuthService.login(credentials).then((res) => {
-            console.log("Login Successful!");
-
-            const token = res.data.accessToken;
-            localStorage.setItem("token", token);
-
-            navigate("/home");
-        });
+        dispatch(AuthService.login(credentials));
     };
+
+    useEffect(() => {
+        if(isAuthenticated) {
+            navigate("/home");
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="login__container">

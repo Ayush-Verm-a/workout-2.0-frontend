@@ -3,23 +3,22 @@ import AuthService from "../services/AuthService";
 import { Link, useNavigate } from "react-router-dom";
 import { Activity, ArrowRight, Lock, Mail, UserIcon } from "lucide-react";
 import "../styles/login-style.scss";
+import { useDispatch, useSelector } from "react-redux";
 
 const RegisterComponent = () => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { isAuthenticated } = useSelector((store) => store.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleRegister = (e) => {
         e.preventDefault();
         const user = { name: userName, email, password };
 
-        AuthService.register(user)
-            .then((res) => {
-                console.log("Registration Successful!");
-                navigate("/login");
-            })
-            .catch((error) => console.log(error));
+        dispatch(AuthService.register(user));
+        navigate("/login");
     };
 
     return (

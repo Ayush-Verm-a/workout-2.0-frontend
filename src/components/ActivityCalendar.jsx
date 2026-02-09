@@ -2,7 +2,6 @@ import { CalendarDays } from "lucide-react";
 import { useMemo } from "react";
 
 const ActivityCalendar = ({ workouts }) => {
-    console.log(workouts);
     const today = new Date();
     const generateCalendarDays = () => {
         const days = [];

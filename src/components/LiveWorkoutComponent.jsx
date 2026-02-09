@@ -15,12 +15,14 @@ import {
     X,
 } from "lucide-react";
 import { useImmer } from "use-immer";
+import { useDispatch, useSelector } from "react-redux";
 
 const LiveWorkoutComponent = () => {
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
-    const [definitions, setDefinitions] = useState([]);
+    const { exercises } = useSelector((store) => store.workout);
+    const { isAuthenticated } = useSelector((store) => store.user);
     const [workoutTitle, setWorkoutTitle] = useState("New Workout");
     const [activeExercises, setActiveExercises] = useImmer([]);
     const [totalCalories, setTotalCalories] = useState(0);
@@ -28,12 +30,16 @@ const LiveWorkoutComponent = () => {
     const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        WorkoutService.getDefinitions().then((res) => {
-            setDefinitions(res.data);
-        });
-    }, []);
+        if (!isAuthenticated) {
+            navigate("/home");
+        }
+        if (!exercises || exercises.length === 0) {
+            dispatch(WorkoutService.getDefinitions());
+        }
+    }, [dispatch, isAuthenticated]);
 
     useEffect(() => {
         let interval = null;
@@ -91,7 +97,7 @@ const LiveWorkoutComponent = () => {
     };
 
     const addExerciseToWorkout = (defId) => {
-        const def = definitions.find((d) => d.id === defId);
+        const def = exercises.find((d) => d.id === defId);
 
         const exists = activeExercises.findIndex(
             (ex) => ex.definitionId === defId,
@@ -117,9 +123,8 @@ const LiveWorkoutComponent = () => {
 
         const num = calories[exerciseIndex];
         setTotalCalories((prevTotal) => prevTotal - num);
-        const newCalories = [...calories]
+        const newCalories = [...calories];
         newCalories.splice(exerciseIndex, 1);
-        console.log(newCalories);
         setCalories(newCalories);
     };
 
@@ -399,7 +404,7 @@ const LiveWorkoutComponent = () => {
                         </div>
                         <div className="modalbody">
                             <div className="exerciselist">
-                                {definitions.map((ex) => (
+                                {exercises.map((ex) => (
                                     <button
                                         key={ex.id}
                                         onClick={() =>

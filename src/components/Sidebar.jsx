@@ -12,6 +12,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import "../styles/sidebar-style.scss";
+import { useDispatch, useSelector } from "react-redux";
 
 const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
     return (
@@ -28,27 +29,23 @@ const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
 };
 
 const Sidebar = () => {
+    const { user, isAuthenticated } = useSelector((store) => store.user);
     const [currentView, setCurrentView] = useState("");
-    const isAuth = AuthService.getCurrentUser();
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        UserService.getProfile()
-            .then((res) => {
-                setUser(res.data);
-                console.log(res.data);
-            })
-            .catch((err) => console.error(err));
-    }, [isAuth]);
+        dispatch(AuthService.getCurrentUser());
+    }, [isAuthenticated]);
 
     const profileClick = () => {};
 
     const handleLogout = () => {
         setCurrentView("");
-        setUser(null);
-        AuthService.logout();
-        navigate("/login");
+        dispatch(AuthService.logout());
+        navigate("/home");
     };
 
     return (
@@ -97,7 +94,7 @@ const Sidebar = () => {
                 />
             </nav>
 
-            {isAuth && user && (
+            {isAuthenticated && user && (
                 <div className="sidebar__usercontainer">
                     <Link>
                         <button
@@ -122,7 +119,7 @@ const Sidebar = () => {
                     </div>
                 </div>
             )}
-            {!isAuth && (
+            {!isAuthenticated && (
                 <div className="sidebar__usercontainer">
                     <div className="navlogin">
                         <Link to="/login">

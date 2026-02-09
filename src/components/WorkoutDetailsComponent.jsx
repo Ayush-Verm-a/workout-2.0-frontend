@@ -12,7 +12,6 @@ const WorkoutDetailsComponent = () => {
     useEffect(() => {
         WorkoutService.getWorkoutById(id)
             .then((res) => {
-                console.log(res.data);
                 setWorkout(res.data);
                 processData(res.data);
             })

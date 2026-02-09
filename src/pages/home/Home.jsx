@@ -10,6 +10,7 @@ import {
     Users,
     Zap,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     return (
@@ -31,9 +32,11 @@ const Home = () => {
                         with next-gen image editing tools.
                     </p>
                     <div className="herobodybtn">
-                        <button className="herobodybtn1">
-                            Start Your Journey <ArrowRight />
-                        </button>
+                        <Link to="/register">
+                            <button className="herobodybtn1">
+                                Start Your Journey <ArrowRight />
+                            </button>
+                        </Link>
                         <button className="herobodybtn2">
                             Explore Features
                         </button>

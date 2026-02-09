@@ -3,22 +3,25 @@ import WorkoutService from "../services/WorkoutService";
 import ActivityCalendar from "./ActivityCalendar";
 import Chart from "./Chart";
 import { Activity } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const FeedComponent = () => {
-    const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { isAuthenticated } = useSelector((store) => store.user);
+    const { workouts } = useSelector((store) => store.workout);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        WorkoutService.getAllWorkouts()
-            .then((res) => {
-                setWorkouts(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
-    }, []);
+        if (!isAuthenticated) {
+            navigate("/home");
+        }
+        if (!workouts || workouts.length === 0) {
+            dispatch(WorkoutService.getAllWorkouts());
+        }
+    }, [dispatch, isAuthenticated]);
 
     const generateCalendarDays = () => {
         const today = new Date();

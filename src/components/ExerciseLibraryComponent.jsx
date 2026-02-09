@@ -2,30 +2,24 @@ import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import "../styles/exercise-library-style.scss";
 import { ChevronRight, Info, Search, Trophy, Zap } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExerciseLibraryComponent = () => {
     const categories = ["All", "Strength", "Cardio", "HIIT", "Stability"];
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
+    const dispatch = useDispatch();
 
-    const [exercises, setExercises] = useState([]);
+    const { exercises } = useSelector((store) => store.workout);
 
     const [name, setName] = useState("");
     const [muscleGroup, setMuscleGroup] = useState("");
     const [message, setMessage] = useState("");
 
-    const loadExercises = () => {
-        WorkoutService.getDefinitions()
-            .then((res) => {
-                setExercises(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     useEffect(() => {
-        loadExercises();
+        if (!exercises || exercises.length === 0) {
+            dispatch(WorkoutService.getDefinitions());
+        }
     }, []);
 
     const filteredExercises = exercises.filter((ex) => {
@@ -78,8 +72,6 @@ const ExerciseLibraryComponent = () => {
                 muscleGroupList[ex.muscleGroup].push(ex);
             }
         });
-
-        console.log(muscleGroupList);
 
         return muscleGroupList;
     };

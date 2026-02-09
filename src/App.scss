@@ -134,6 +134,10 @@ button {
             transition-duration: 1000ms;
             transition-delay: 700ms;
 
+            a {
+                text-decoration: none;
+            }
+
             .herobodybtn1 {
                 padding: 1rem 2rem;
                 color: rgb(255, 255, 255);
@@ -882,6 +886,7 @@ button {
             padding-top: 0rem;
             height: 100vh;
             overflow-y: auto;
+            padding-bottom: 0rem;
         }
     }
 
