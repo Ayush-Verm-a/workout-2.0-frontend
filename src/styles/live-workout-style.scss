@@ -1,13 +1,11 @@
-.liveworkout {
-    &__container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: rgb(248, 250, 252);
-        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 300ms;
-    }
+.live-workout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(248, 250, 252);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
 
     &__header {
         padding: 1rem;
@@ -21,14 +19,14 @@
         align-items: center;
         gap: 1rem;
 
-        .headerleft {
+        &-left {
             display: flex;
             align-items: center;
             gap: 1.5rem;
             width: 100%;
             justify-content: center;
 
-            .headerlefttitle {
+            .header-stat {
                 text-align: center;
 
                 p {
@@ -41,52 +39,52 @@
                     margin-bottom: 0.25rem;
                 }
 
-                .timer {
-                    font-size: 1.875rem;
-                    line-height: 2.25rem;
-                    font-weight: 700;
-                    color: rgb(15, 23, 42);
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-
-                    svg {
-                        width: 1.25rem;
-                        height: 1.25rem;
-                        color: rgb(5, 150, 105);
-                    }
-                }
-
-                .calories {
+                .stat-value {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
                     justify-content: center;
 
-                    svg {
-                        width: 1.25rem;
-                        height: 1.25rem;
-                        color: rgb(249, 115, 22);
-                    }
-
-                    span {
+                    &.timer {
                         font-size: 1.875rem;
                         line-height: 2.25rem;
                         font-weight: 700;
                         color: rgb(15, 23, 42);
-                        font-variant-numeric: tabular-nums;
+
+                        svg {
+                            color: rgb(5, 150, 105);
+                        }
+                    }
+
+                    &.calories {
+                        svg {
+                            color: rgb(249, 115, 22);
+                        }
+
+                        span {
+                            font-size: 1.875rem;
+                            line-height: 2.25rem;
+                            font-weight: 700;
+                            color: rgb(15, 23, 42);
+                            font-variant-numeric: tabular-nums;
+                        }
+                    }
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
                     }
                 }
             }
         }
 
-        .headerright {
+        &-right {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             width: 100%;
 
-            .playbtn1 {
+            .btn-play {
                 flex: 1 1 0;
                 display: flex;
                 align-items: center;
@@ -107,13 +105,13 @@
                     height: 1.25rem;
                     fill: currentColor;
                 }
+
+                &:hover {
+                    background-color: rgb(16, 185, 129);
+                }
             }
 
-            .playbtn1:hover {
-                background-color: rgb(16, 185, 129);
-            }
-
-            .playpausebtn {
+            .btn-play-pause {
                 flex: 1 1 0%;
                 display: flex;
                 align-items: center;
@@ -132,26 +130,26 @@
                     fill: currentColor;
                 }
 
-                &.ispaused {
+                &.paused {
                     background-color: rgb(5, 150, 105);
                     color: rgb(255, 255, 255);
+
+                    &:hover {
+                        background-color: rgb(16, 185, 129);
+                    }
                 }
 
-                &.ispaused:hover {
-                    background-color: rgb(16, 185, 129);
-                }
-
-                &.isnotpaused {
+                &.running {
                     background: rgb(234, 179, 8);
                     color: rgb(255, 255, 255);
-                }
 
-                &.isnotpaused:hover {
-                    background-color: rgb(250, 204, 21);
+                    &:hover {
+                        background-color: rgb(250, 204, 21);
+                    }
                 }
             }
 
-            .finishbtn {
+            .btn-finish {
                 flex: 1 1 0%;
                 display: flex;
                 align-items: center;
@@ -170,13 +168,13 @@
                     width: 1.25rem;
                     height: 1.25rem;
                 }
+
+                &:hover {
+                    background-color: rgb(51, 65, 85);
+                }
             }
 
-            .finishbtn:hover {
-                background-color: rgb(51, 65, 85);
-            }
-
-            .cancelbtn {
+            .btn-cancel {
                 padding: 0.75rem;
                 color: rgb(239, 68, 68);
                 border-radius: 0.75rem;
@@ -189,10 +187,10 @@
                     height: 1.25rem;
                     fill: currentColor;
                 }
-            }
 
-            .cancelbtn:hover {
-                background-color: rgb(239, 68, 68, 0.1);
+                &:hover {
+                    background-color: rgb(239, 68, 68, 0.1);
+                }
             }
         }
     }
@@ -206,7 +204,11 @@
         margin-right: auto;
         width: 100%;
 
-        .bodytitle {
+        &>*+* {
+            margin-top: 1.5rem;
+        }
+
+        .workout-title {
             label {
                 font-size: 0.875rem;
                 line-height: 1.25rem;
@@ -231,20 +233,20 @@
                 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
                 transition-duration: 150ms;
                 color: rgb(148, 163, 184);
+
+                &:focus {
+                    border-color: rgb(16, 185, 129);
+                    outline: 2px solid transparent;
+                    outline-offset: 2px;
+                }
             }
 
-            input:focus {
-                border-color: rgb(16, 185, 129);
-                outline: 2px solid transparent;
-                outline-offset: 2px;
+            &>*+* {
+                margin-top: 0.5rem;
             }
         }
 
-        .bodytitle>*+* {
-            margin-top: 0.5rem;
-        }
-
-        .bodynoexercise {
+        .empty-state {
             text-align: center;
             padding-top: 3rem;
             padding-bottom: 3rem;
@@ -254,7 +256,7 @@
             border-radius: 1.5rem;
             background-color: rgb(248, 250, 252);
 
-            .noexerciseicon {
+            &__icon {
                 width: 4rem;
                 height: 4rem;
                 background-color: rgb(226, 232, 240);
@@ -273,7 +275,7 @@
                 }
             }
 
-            .noexercisetitle {
+            &__title {
                 font-size: 1.25rem;
                 line-height: 1.75rem;
                 font-weight: 700;
@@ -281,12 +283,12 @@
                 margin: 0.5rem;
             }
 
-            .noexercisebody {
+            &__subtitle {
                 color: rgb(100, 116, 139);
                 margin-bottom: 1.5rem;
             }
 
-            .addexercisebtn {
+            .btn-add-exercise {
                 background-color: rgb(5, 150, 105);
                 color: rgb(255, 255, 255);
                 padding: 0.75rem 1.5rem;
@@ -303,276 +305,23 @@
                     width: 1.25rem;
                     height: 1.25rem;
                 }
-            }
 
-            .addexercisebtn:hover {
-                background-color: rgb(16, 185, 129);
-            }
-        }
-
-        .activeexercises {
-            .singleexercise {
-                background-color: rgb(255, 255, 255);
-                border-color: 1px solid rgb(226, 232, 240);
-                border-radius: 1rem;
-                box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
-                overflow: hidden;
-
-                .exercisecontainer {
-                    padding: 1rem;
-                    background-color: rgb(248, 250, 252);
-                    border-bottom: 1px solid rgb(226, 232, 240);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    .exercisetitle {
-                        font-size: 1.125rem;
-                        line-height: 1.75rem;
-                        font-weight: 700;
-                        color: rgb(15, 23, 42);
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-
-                        span {
-                            width: 2rem;
-                            height: 2rem;
-                            border-radius: 0.5rem;
-                            background-color: rgb(5, 150, 105, 0.1);
-                            color: rgb(5, 150, 105);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 0.75rem;
-                            line-height: 1rem;
-                            font-weight: 700;
-                        }
-                    }
-
-                    .exercisecontrol {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.75rem;
-
-                        .calorie {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.25rem;
-                            background-color: rgb(255, 255, 255);
-                            border-radius: 0.5rem;
-                            padding: 0.375rem 0.75rem;
-                            border: 1px solid rgb(226, 232, 240);
-                            box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
-
-                            svg {
-                                width: 0.75rem;
-                                height: 0.75rem;
-                                color: rgb(249, 115, 22);
-                            }
-
-                            input {
-                                width: 3rem;
-                                background-color: transparent;
-                                font-size: 0.875rem;
-                                line-height: 1.25rem;
-                                font-weight: 600;
-                                color: rgb(15, 23, 42);
-                                text-align: right;
-                                border: none;
-                            }
-
-                            input:focus {
-                                outline: 2px solid transparent;
-                                outline-offset: 2px;
-                            }
-
-                            span {
-                                font-size: 0.75rem;
-                                line-height: 1rem;
-                                color: rgb(148, 163, 184);
-                                font-weight: 500;
-                            }
-                        }
-
-                        .divider {
-                            height: 1.5rem;
-                            width: 1px;
-                            background-color: rgb(226, 232, 240);
-                        }
-
-                        .removebtn {
-                            color: rgb(148, 163, 184);
-                            padding: 0.5rem;
-                            border-radius: 0.5rem;
-                            background-color: rgb(239, 68, 68, 0.1);
-                            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                            transition-duration: 150ms;
-
-                            svg {
-                                width: 1.25rem;
-                                height: 1.25rem;
-                            }
-                        }
-
-                        .removebtn:hover {
-                            color: rgb(239, 68, 68);
-                        }
-                    }
-                }
-
-                .exercisebody {
-                    padding: 1rem;
-
-                    .settitle {
-                        display: grid;
-                        grid-template-columns: repeat(10, minmax(0, 1fr));
-                        gap: 0.5rem;
-                        margin-bottom: 0.5rem;
-                        padding-left: 0.5rem;
-                        padding-right: 0.5rem;
-                        font-size: 0.75rem;
-                        line-height: 1rem;
-                        font-weight: 700;
-                        color: rgb(100, 116, 139);
-                        text-transform: uppercase;
-                        letter-spacing: 0.05em;
-                        text-align: center;
-
-                        .setindex {
-                            grid-column: span 1 / span 1;
-                        }
-
-                        .setkg {
-                            grid-column: span 4 / span 4;
-                        }
-
-                        .setrep {
-                            grid-column: span 4 / span 4;
-                        }
-
-                        .setremove {
-                            grid-column: span 1 / span 1;
-                        }
-                    }
-
-                    .setbody {
-                        .singleset {
-                            display: grid;
-                            grid-template-columns: repeat(10, minmax(0, 1fr));
-                            gap: 0.5rem;
-                            align-items: center;
-
-                            .singlesetindex {
-                                grid-column: span 1 / span 1;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-
-                                span {
-                                    width: 1.5rem;
-                                    height: 1.5rem;
-                                    border-radius: 9999px;
-                                    background-color: rgb(241, 245, 249);
-                                    color: rgb(71, 85, 105);
-                                    font-size: 0.75rem;
-                                    line-height: 1rem;
-                                    font-weight: 700;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                }
-                            }
-
-                            .singlesetkgrep {
-                                grid-column: span 4 / span 4;
-
-                                input {
-                                    width: 100%;
-                                    background-color: rgb(248, 250, 252);
-                                    border: 1px solid rgb(226, 232, 240);
-                                    border-radius: 0.5rem;
-                                    padding: 0.5rem;
-                                    text-align: center;
-                                    color: rgb(15, 23, 42);
-                                    font-weight: 500;
-                                }
-
-                                input:focus {
-                                    outline: 2px solid transparent;
-                                    outline-offset: 2px;
-                                    border-color: rgb(16, 185, 129);
-                                }
-                            }
-
-                            .singlesetremove {
-                                grid-column: span 1 / span 1;
-                                display: flex;
-                                justify-content: center;
-
-                                button {
-                                    color: rgb(203, 213, 225);
-                                    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                                    transition-duration: 150ms;
-
-                                    svg {
-                                        width: 1rem;
-                                        height: 1rem;
-                                    }
-                                }
-
-                                button:hover {
-                                    color: rgb(248, 113, 113);
-                                }
-                            }
-                        }
-                    }
-
-                    .setbody>*+* {
-                        margin-top: 0.5rem;
-                    }
-
-                    .addset {
-                        margin-top: 1rem;
-                        width: 100%;
-                        padding-top: 0.5rem;
-                        padding-bottom: 0.5rem;
-                        background-color: rgb(248, 250, 252);
-                        border: 1px dashed rgb(203, 213, 225);
-                        border-radius: 0.5rem;
-                        font-size: 0.875rem;
-                        line-height: 1.25rem;
-                        font-weight: 600;
-                        color: rgb(71, 85, 105);
-                        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                        transition-duration: 150ms;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 0.5rem;
-
-                        svg {
-                            width: 1rem;
-                            height: 1rem;
-                        }
-                    }
-
-                    .addset:hover {
-                        background-color: rgb(241, 245, 249);
-                    }
+                &:hover {
+                    background-color: rgb(16, 185, 129);
                 }
             }
         }
 
-        .activeexercises>*+* {
-            margin-top: 1.5rem;
+        .active-exercises {
+            &>*+* {
+                margin-top: 1.5rem;
+            }
+
+            // Logic for individual exercise items moved to .exercise-item block
         }
 
-        .addbtncontainer {
-            .addexercisebtn {
+        .add-exercise-container {
+            .btn-add-exercise-dashed {
                 width: 100%;
                 padding-top: 1rem;
                 padding-bottom: 1rem;
@@ -588,163 +337,408 @@
                 align-items: center;
                 justify-content: center;
                 gap: 0.5rem;
-            }
 
-            .addexercisebtn:hover {
-                border-color: rgb(16, 185, 129);
-                color: rgb(16, 185, 129);
-            }
-        }
-    }
-
-    &__body>*+* {
-        margin-top: 1.5rem;
-    }
-
-    &__exercisemodal {
-        position: fixed;
-        inset: 0px;
-        z-index: 50;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        background-color: rgb(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
-
-        .modalcontainer {
-            background-color: rgb(255, 255, 255);
-            width: 100%;
-            max-width: 28rem;
-            border-radius: 1rem;
-            box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgb(0, 0, 0, 0.25);
-            overflow: hidden;
-            border-width: 1px;
-            border-color: rgb(226, 232, 240);
-
-            .modaltop {
-                padding: 1rem;
-                border-bottom-width: 1px;
-                border-color: rgb(226, 232, 240);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background-color: rgb(248, 250, 252);
-
-                h3 {
-                    font-size: 1.125rem;
-                    line-height: 1.75rem;
-                    font-weight: 700;
-                    color: rgb(15, 23, 42);
-                }
-
-                button {
-                    color: rgb(100, 116, 139);
-
-                    svg {
-                        width: 1.25rem;
-                        height: 1.25rem;
-                    }
-                }
-
-                button:hover {
-                    color: rgb(15, 23, 42);
-                }
-            }
-
-            .modalbody {
-                padding: 0.5rem;
-                max-height: 60vh;
-                overflow-y: auto;
-
-                .exerciselist {
-                    display: grid;
-                    grid-template-columns: repeat(1, minmax(0, 1fr));
-                    gap: 0.25rem;
-
-                    button {
-                        padding: 0.75rem;
-                        text-align: left;
-                        border-radius: 0.75rem;
-                        color: rgb(51, 65, 85);
-                        font-weight: 500;
-                        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                        transition-duration: 150ms;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-
-                        svg {
-                            width: 1rem;
-                            height: 1rem;
-                            opacity: 0;
-                            color: rgb(16, 185, 129);
-                            transition-property: opacity;
-                            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                            transition-duration: 150ms
-                        }
-                    }
-
-                    button:hover {
-                        background-color: rgb(241, 245, 249);
-
-                        svg {
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-
-            .modalfooter {
-                padding: 1rem;
-                background-color: rgb(248, 250, 252);
-                border-top: 1px solid rgb(226, 232, 240);
-
-                button {
-                    width: 100%;
-                    padding-top: 0.5rem;
-                    padding-bottom: 0.5rem;
-                    background-color: rgb(226, 232, 240);
-                    border-radius: 0.75rem;
-                    color: rgb(51, 65, 85);
-                    font-weight: 700;
-                    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-                    transition-duration: 150ms;
-                }
-
-                button:hover {
-                    background-color: rgb(203, 213, 225);
+                &:hover {
+                    border-color: rgb(16, 185, 129);
+                    color: rgb(16, 185, 129);
                 }
             }
         }
     }
 }
 
+.exercise-item {
+    background-color: rgb(255, 255, 255);
+    border-color: 1px solid rgb(226, 232, 240);
+    border-radius: 1rem;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+    overflow: hidden;
+
+    &__header {
+        padding: 1rem;
+        background-color: rgb(248, 250, 252);
+        border-bottom: 1px solid rgb(226, 232, 240);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__title {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        font-weight: 700;
+        color: rgb(15, 23, 42);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        span {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.5rem;
+            background-color: rgb(5, 150, 105, 0.1);
+            color: rgb(5, 150, 105);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .calorie-input {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: rgb(255, 255, 255);
+            border-radius: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border: 1px solid rgb(226, 232, 240);
+            box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+
+            svg {
+                width: 0.75rem;
+                height: 0.75rem;
+                color: rgb(249, 115, 22);
+            }
+
+            input {
+                width: 3rem;
+                background-color: transparent;
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                font-weight: 600;
+                color: rgb(15, 23, 42);
+                text-align: right;
+                border: none;
+
+                &:focus {
+                    outline: 2px solid transparent;
+                    outline-offset: 2px;
+                }
+            }
+
+            span {
+                font-size: 0.75rem;
+                line-height: 1rem;
+                color: rgb(148, 163, 184);
+                font-weight: 500;
+            }
+        }
+
+        .divider {
+            height: 1.5rem;
+            width: 1px;
+            background-color: rgb(226, 232, 240);
+        }
+
+        .btn-remove {
+            color: rgb(148, 163, 184);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: rgb(239, 68, 68, 0.1);
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+
+            svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            &:hover {
+                color: rgb(239, 68, 68);
+            }
+        }
+    }
+
+    &__body {
+        padding: 1rem;
+
+        .sets-header {
+            display: grid;
+            grid-template-columns: repeat(10, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+            color: rgb(100, 116, 139);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+
+            .col-index {
+                grid-column: span 1 / span 1;
+            }
+
+            .col-weight {
+                grid-column: span 4 / span 4;
+            }
+
+            .col-reps {
+                grid-column: span 4 / span 4;
+            }
+
+            .col-remove {
+                grid-column: span 1 / span 1;
+            }
+        }
+
+        .sets-list {
+            .set-item {
+                display: grid;
+                grid-template-columns: repeat(10, minmax(0, 1fr));
+                gap: 0.5rem;
+                align-items: center;
+
+                &__index {
+                    grid-column: span 1 / span 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    span {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        border-radius: 9999px;
+                        background-color: rgb(241, 245, 249);
+                        color: rgb(71, 85, 105);
+                        font-size: 0.75rem;
+                        line-height: 1rem;
+                        font-weight: 700;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+
+                &__input {
+                    grid-column: span 4 / span 4;
+
+                    input {
+                        width: 100%;
+                        background-color: rgb(248, 250, 252);
+                        border: 1px solid rgb(226, 232, 240);
+                        border-radius: 0.5rem;
+                        padding: 0.5rem;
+                        text-align: center;
+                        color: rgb(15, 23, 42);
+                        font-weight: 500;
+
+                        &:focus {
+                            outline: 2px solid transparent;
+                            outline-offset: 2px;
+                            border-color: rgb(16, 185, 129);
+                        }
+                    }
+                }
+
+                &__remove {
+                    grid-column: span 1 / span 1;
+                    display: flex;
+                    justify-content: center;
+
+                    button {
+                        color: rgb(203, 213, 225);
+                        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                        transition-duration: 150ms;
+
+                        svg {
+                            width: 1rem;
+                            height: 1rem;
+                        }
+
+                        &:hover {
+                            color: rgb(248, 113, 113);
+                        }
+                    }
+                }
+            }
+
+            &>*+* {
+                margin-top: 0.5rem;
+            }
+        }
+
+        .btn-add-set {
+            margin-top: 1rem;
+            width: 100%;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background-color: rgb(248, 250, 252);
+            border: 1px dashed rgb(203, 213, 225);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 600;
+            color: rgb(71, 85, 105);
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            svg {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            &:hover {
+                background-color: rgb(241, 245, 249);
+            }
+        }
+    }
+}
+
+.exercise-modal {
+    position: fixed;
+    inset: 0px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgb(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+
+    &__container {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        max-width: 28rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgb(0, 0, 0, 0.25);
+        overflow: hidden;
+        border-width: 1px;
+        border-color: rgb(226, 232, 240);
+    }
+
+    &__header {
+        padding: 1rem;
+        border-bottom-width: 1px;
+        border-color: rgb(226, 232, 240);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(248, 250, 252);
+
+        h3 {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-weight: 700;
+            color: rgb(15, 23, 42);
+        }
+
+        button {
+            color: rgb(100, 116, 139);
+
+            svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            &:hover {
+                color: rgb(15, 23, 42);
+            }
+        }
+    }
+
+    &__body {
+        padding: 0.5rem;
+        max-height: 60vh;
+        overflow-y: auto;
+
+        .exercise-list {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 0.25rem;
+
+            button {
+                padding: 0.75rem;
+                text-align: left;
+                border-radius: 0.75rem;
+                color: rgb(51, 65, 85);
+                font-weight: 500;
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 150ms;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+                    opacity: 0;
+                    color: rgb(16, 185, 129);
+                    transition-property: opacity;
+                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                    transition-duration: 150ms
+                }
+
+                &:hover {
+                    background-color: rgb(241, 245, 249);
+
+                    svg {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+
+    &__footer {
+        padding: 1rem;
+        background-color: rgb(248, 250, 252);
+        border-top: 1px solid rgb(226, 232, 240);
+
+        button {
+            width: 100%;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background-color: rgb(226, 232, 240);
+            border-radius: 0.75rem;
+            color: rgb(51, 65, 85);
+            font-weight: 700;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+
+            &:hover {
+                background-color: rgb(203, 213, 225);
+            }
+        }
+    }
+}
+
 @media (min-width: 768px) {
-    .liveworkout {
+    .live-workout {
         &__header {
             padding: 1.5rem;
             flex-direction: row;
 
-            .headerleft {
+            &-left {
                 width: auto;
                 justify-content: flex-start;
             }
 
-            .headerright {
+            &-right {
                 width: auto;
 
-                .playbtn {
-                    flex: none;
-                }
-
-                .playpausebtn {
-                    flex: none;
-                }
-
-                .finishbtn {
+                .btn-play,
+                .btn-play-pause,
+                .btn-finish {
                     flex: none;
                 }
             }
@@ -753,7 +747,7 @@
         &__body {
             padding: 2rem;
 
-            .bodytitle {
+            .workout-title {
                 input {
                     font-size: 2.25rem;
                     line-height: 2.5rem
@@ -761,5 +755,4 @@
             }
         }
     }
-
 }

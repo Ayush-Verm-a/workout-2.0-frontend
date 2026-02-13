@@ -19,7 +19,7 @@ const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
         <Link to={`/${link}`}>
             <button
                 onClick={() => onClick(view)}
-                className={`navitem ${current === view ? "navitemactive" : "navitemnotactive"}`}
+                className={`nav-item ${current === view ? "nav-item--active" : ""}`}
             >
                 <Icon />
                 <span>{label}</span>
@@ -40,7 +40,7 @@ const Sidebar = () => {
         dispatch(AuthService.getCurrentUser());
     }, [isAuthenticated]);
 
-    const profileClick = () => {};
+    const profileClick = () => { };
 
     const handleLogout = () => {
         setCurrentView("");
@@ -49,17 +49,17 @@ const Sidebar = () => {
     };
 
     return (
-        <aside className="sidebar__container">
+        <aside className="sidebar">
             <Link to="/" onClick={() => setCurrentView("")}>
-                <div className="sidebar__head">
-                    <div className="icon">
+                <div className="sidebar__header">
+                    <div className="sidebar__icon">
                         <BicepsFlexed />
                     </div>
                     <span>Workout App</span>
                 </div>
             </Link>
 
-            <nav className="sidebar__navcontainer">
+            <nav className="sidebar__nav">
                 <NavItem
                     view="FEED"
                     label="Feed"
@@ -95,23 +95,23 @@ const Sidebar = () => {
             </nav>
 
             {isAuthenticated && user && (
-                <div className="sidebar__usercontainer">
+                <div className="sidebar__footer">
                     <Link>
                         <button
                             onClick={() => setCurrentView("PROFILE")}
-                            className={`navuser ${currentView === "PROFILE" ? "navuseractive" : ""}`}
+                            className={`user-profile ${currentView === "PROFILE" ? "user-profile--active" : ""}`}
                         >
-                            <div className="navusericon">
+                            <div className="user-profile__avatar">
                                 {user.name.charAt(0).toUpperCase()}
                             </div>
-                            <div className="navuserdetail">
-                                <p className="navusername">{user.name}</p>
-                                <p className="navuseremail">{user.email}</p>
+                            <div className="user-profile__info">
+                                <p className="user-profile__name">{user.name}</p>
+                                <p className="user-profile__email">{user.email}</p>
                             </div>
                         </button>
                     </Link>
-                    <div className="navuserdivider" />
-                    <div className="navlogout">
+                    <div className="sidebar__divider" />
+                    <div className="sidebar__logout">
                         <button onClick={handleLogout}>
                             <LogOut />
                             <span>Sign Out</span>
@@ -120,8 +120,8 @@ const Sidebar = () => {
                 </div>
             )}
             {!isAuthenticated && (
-                <div className="sidebar__usercontainer">
-                    <div className="navlogin">
+                <div className="sidebar__footer">
+                    <div className="sidebar__login">
                         <Link to="/login">
                             <button onClick={() => setCurrentView("")}>
                                 <LogIn />

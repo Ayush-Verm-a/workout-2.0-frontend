@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../../styles/home-style.scss";
 import AddWorkoutComponent from "../../components/AddWorkoutComponent";
 import {
     Activity,

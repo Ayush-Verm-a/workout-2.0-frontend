@@ -1,5 +1,6 @@
 import { CalendarDays } from "lucide-react";
 import { useMemo } from "react";
+import "../styles/activity-calendar-style.scss";
 
 const ActivityCalendar = ({ workouts }) => {
     const today = new Date();
@@ -70,15 +71,15 @@ const ActivityCalendar = ({ workouts }) => {
                     return (
                         <div
                             key={i}
-                            className={`calendarday ${hasWorkout ? "hasworkout" : "hasnoworkout"} ${isToday ? 'istoday' : ''} ${!isWithin30Days? 'withinmonth': ''}`}
+                            className={`calendarday ${hasWorkout ? "hasworkout" : "hasnoworkout"} ${isToday ? 'istoday' : ''} ${!isWithin30Days ? 'withinmonth' : ''}`}
                             title={
                                 hasWorkout
                                     ? dayWorkouts
-                                          ?.map(
-                                              (w) =>
-                                                  `${w.type}: ${w.durationMinutes}m`,
-                                          )
-                                          .join("\n")
+                                        ?.map(
+                                            (w) =>
+                                                `${w.type}: ${w.durationMinutes}m`,
+                                        )
+                                        .join("\n")
                                     : undefined
                             }
                         >

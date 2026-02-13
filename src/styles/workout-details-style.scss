@@ -1,0 +1,29 @@
+.workoutdetails {
+    &__container {
+        margin: 10px;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: #FFA673;
+    }
+
+    &__overviewrow {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        margin-bottom: 20px;
+        margin-top: 10px;
+    }
+
+    &__setrow {
+        display: flex;
+        gap: 20px;
+
+        span {
+            min-width: 15px;
+        }
+    }
+
+    &__setgroup {
+        margin-bottom: 10px;
+    }
+}

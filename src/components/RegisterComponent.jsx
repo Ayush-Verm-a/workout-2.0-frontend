@@ -22,21 +22,21 @@ const RegisterComponent = () => {
     };
 
     return (
-        <div className="register__container">
-            <div className="bg1" />
-            <div className="bg2" />
-            <div className="authbody">
-                <div className="bodytop">
-                    <div className="icon">
+        <div className="auth-page">
+            <div className="auth-page__bg-1" />
+            <div className="auth-page__bg-2" />
+            <div className="auth-card">
+                <div className="auth-card__header">
+                    <div className="auth-card__icon">
                         <Activity />
                     </div>
-                    <h1 className="topheader">Workout App</h1>
-                    <p className="topcopy">Start your fitness journey today.</p>
+                    <h1 className="auth-card__title">Workout App</h1>
+                    <p className="auth-card__subtitle">Start your fitness journey today.</p>
                 </div>
-                <form className="bodycred">
-                    <div className="credcontainer">
+                <form className="auth-card__form">
+                    <div className="form-group">
                         <label>Full Name</label>
-                        <div className="cred">
+                        <div className="form-input">
                             <UserIcon />
                             <input
                                 type="text"
@@ -46,9 +46,9 @@ const RegisterComponent = () => {
                             />
                         </div>
                     </div>
-                    <div className="credcontainer">
+                    <div className="form-group">
                         <label>Email</label>
-                        <div className="cred">
+                        <div className="form-input">
                             <Mail />
                             <input
                                 type="email"
@@ -58,9 +58,9 @@ const RegisterComponent = () => {
                             />
                         </div>
                     </div>
-                    <div className="credcontainer">
+                    <div className="form-group">
                         <label>Password</label>
-                        <div className="cred">
+                        <div className="form-input">
                             <Lock />
                             <input
                                 type="password"
@@ -70,14 +70,14 @@ const RegisterComponent = () => {
                             />
                         </div>
                     </div>
-                    <button className="auth-btn" onClick={handleRegister}>
+                    <button className="btn-auth" onClick={handleRegister}>
                         Create Account
                         <ArrowRight />
                     </button>
                 </form>
 
-                <div className="bodybottom">
-                    <p className="bottomcopy">
+                <div className="auth-card__footer">
+                    <p className="auth-card__footer-text">
                         Already have an account?{" "}
                         <button onClick={() => navigate("/login")}>
                             Sign In

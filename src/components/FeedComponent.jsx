@@ -5,6 +5,7 @@ import Chart from "./Chart";
 import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import "../styles/feed-style.scss";
 
 const FeedComponent = () => {
     const [loading, setLoading] = useState(true);

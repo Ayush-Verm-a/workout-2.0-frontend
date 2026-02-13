@@ -1,0 +1,128 @@
+.listworkout {
+    &__container {
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        width: 100%;
+
+        h1 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
+            color: rgb(30, 41, 59);
+            margin-bottom: 10px;
+        }
+    }
+
+    &__container>*+* {
+        margin-top: 1.5rem;
+    }
+
+    &__subcontainer {
+        overflow: hidden;
+        border: 1px solid rgb(226, 232, 240);
+        border-radius: 0.75rem;
+        background-color: #ffffff;
+        box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+    }
+
+    &__row>*+* {
+        border-top: 1px solid rgb(241, 245, 249);
+    }
+
+    &__noworkout {
+        padding: 2rem;
+        text-align: center;
+        color: rgb(100, 116, 139);
+    }
+
+    &__workoutrow {
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+
+
+    &__workoutdata {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    &__workoutdatahead {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background-color: rgb(241, 245, 249);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: rgb(71, 85, 105);
+
+        span {
+            font-weight: 700;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            text-transform: uppercase;
+        }
+    }
+
+    &__workoutdatabody {
+        h3 {
+            font-weight: 600;
+            color: rgb(30, 41, 59);
+        }
+    }
+
+    &__workoutdatabodycontainer {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin-top: 0.25rem;
+        color: rgb(100, 116, 139);
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+    }
+
+    &__deletebtn {
+        color: rgb(148, 163, 184);
+        padding: 0.5rem;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        align-self: flex-end;
+        opacity: 0;
+    }
+
+    &__deletebtn:hover {
+        color: rgb(239, 68, 68);
+    }
+
+    &__workoutrow:hover {
+        background-color: rgb(248, 250, 252);
+
+        .listworkout__workoutdatahead {
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000;
+        }
+
+        .listworkout__deletebtn {
+            opacity: 1;
+        }
+    }
+}

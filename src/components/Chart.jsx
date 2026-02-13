@@ -1,5 +1,6 @@
 import { duration } from "@mui/material";
 import { useMemo } from "react";
+import "../styles/chart-style.scss";
 import {
     Bar,
     BarChart,

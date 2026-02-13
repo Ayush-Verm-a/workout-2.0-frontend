@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import WorkoutService from "../services/WorkoutService";
+import "../styles/workout-details-style.scss";
 
 const WorkoutDetailsComponent = () => {
     const { id } = useParams();

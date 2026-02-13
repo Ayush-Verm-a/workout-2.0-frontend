@@ -20,27 +20,27 @@ const LoginComponent = () => {
     };
 
     useEffect(() => {
-        if(isAuthenticated) {
+        if (isAuthenticated) {
             navigate("/home");
         }
     }, [isAuthenticated]);
 
     return (
-        <div className="login__container">
-            <div className="bg1" />
-            <div className="bg2" />
-            <div className="authbody">
-                <div className="bodytop">
-                    <div className="icon">
+        <div className="auth-page">
+            <div className="auth-page__bg-1" />
+            <div className="auth-page__bg-2" />
+            <div className="auth-card">
+                <div className="auth-card__header">
+                    <div className="auth-card__icon">
                         <Activity />
                     </div>
-                    <h1 className="topheader">Workout App</h1>
-                    <p className="topcopy">Welcome back! Ready to crush it?</p>
+                    <h1 className="auth-card__title">Workout App</h1>
+                    <p className="auth-card__subtitle">Welcome back! Ready to crush it?</p>
                 </div>
-                <form className="bodycred">
-                    <div className="credcontainer">
+                <form className="auth-card__form">
+                    <div className="form-group">
                         <label>Email</label>
-                        <div className="cred">
+                        <div className="form-input">
                             <Mail />
                             <input
                                 type="email"
@@ -50,9 +50,9 @@ const LoginComponent = () => {
                             />
                         </div>
                     </div>
-                    <div className="credcontainer">
+                    <div className="form-group">
                         <label>Password</label>
-                        <div className="cred">
+                        <div className="form-input">
                             <Lock />
                             <input
                                 type="password"
@@ -62,14 +62,14 @@ const LoginComponent = () => {
                             />
                         </div>
                     </div>
-                    <button className="auth-btn" onClick={handleLogin}>
+                    <button className="btn-auth" onClick={handleLogin}>
                         Login
                         <ArrowRight />
                     </button>
                 </form>
 
-                <div className="bodybottom">
-                    <p className="bottomcopy">
+                <div className="auth-card__footer">
+                    <p className="auth-card__footer-text">
                         Don't have an account?{" "}
                         <button onClick={() => navigate("/register")}>
                             Sign Up

@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
+import "../styles/header-style.scss";
 
 const HeaderComponent = () => {
     const navigate = useNavigate();

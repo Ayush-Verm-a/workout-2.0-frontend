@@ -3,6 +3,7 @@ import WorkoutService from "../services/WorkoutService";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, Flame, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import "../styles/list-workout-style.scss";
 
 const ListWorkoutComponent = () => {
     const navigate = useNavigate();

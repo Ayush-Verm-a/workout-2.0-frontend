@@ -184,35 +184,35 @@ const LiveWorkoutComponent = () => {
     };
 
     return (
-        <div className="liveworkout__container">
-            <div className="liveworkout__header">
-                <div className="headerleft">
-                    <div className="headerlefttitle">
+        <div className="live-workout">
+            <div className="live-workout__header">
+                <div className="live-workout__header-left">
+                    <div className="header-stat">
                         <p>Duration</p>
-                        <div className="timer">
+                        <div className="stat-value timer">
                             <Timer />
                             {formatTime()}
                         </div>
                     </div>
                     <div></div>
-                    <div className="headerlefttitle">
+                    <div className="header-stat">
                         <p>Total Calories</p>
-                        <div className="calories">
+                        <div className="stat-value calories">
                             <Flame />
                             <span>{totalCalories}</span>
                         </div>
                     </div>
                 </div>
-                <div className="headerright">
+                <div className="live-workout__header-right">
                     {!isActive ? (
-                        <button onClick={toggleTimer} className="playbtn1">
+                        <button onClick={toggleTimer} className="btn-play">
                             <Play /> Start
                         </button>
                     ) : (
                         <>
                             <button
                                 onClick={toggleTimer}
-                                className={`playpausebtn ${isPaused ? "ispaused" : "isnotpaused"}`}
+                                className={`btn-play-pause ${isPaused ? "paused" : "running"}`}
                             >
                                 {isPaused ? (
                                     <>
@@ -226,7 +226,7 @@ const LiveWorkoutComponent = () => {
                             </button>
                             <button
                                 onClick={finishWorkout}
-                                className="finishbtn"
+                                className="btn-finish"
                             >
                                 <Save /> Finish
                             </button>
@@ -236,7 +236,7 @@ const LiveWorkoutComponent = () => {
                         <button
                             onClick={resetWorkout}
                             title="Cancel Workout"
-                            className="cancelbtn"
+                            className="btn-cancel"
                         >
                             <Square />
                         </button>
@@ -244,8 +244,8 @@ const LiveWorkoutComponent = () => {
                 </div>
             </div>
 
-            <div className="liveworkout__body">
-                <div className="bodytitle">
+            <div className="live-workout__body">
+                <div className="workout-title">
                     <label>Session Title</label>
                     <input
                         type="text"
@@ -255,28 +255,28 @@ const LiveWorkoutComponent = () => {
                 </div>
 
                 {activeExercises.length === 0 && (
-                    <div className="bodynoexercise">
-                        <div className="noexerciseicon">
+                    <div className="empty-state">
+                        <div className="empty-state__icon">
                             <Dumbbell />
                         </div>
-                        <h3 className="noexercisetitle">Ready to sweat?</h3>
-                        <p className="noexercisebody">
+                        <h3 className="empty-state__title">Ready to sweat?</h3>
+                        <p className="empty-state__subtitle">
                             Start your timer and add your first exercise.
                         </p>
                         <button
                             onClick={() => setIsExerciseModalOpen(true)}
-                            className="addexercisebtn"
+                            className="btn-add-exercise"
                         >
                             <Plus /> Add Exercise
                         </button>
                     </div>
                 )}
 
-                <div className="activeexercises">
+                <div className="active-exercises">
                     {activeExercises.map((exercise, exerciseIndex) => (
-                        <div key={exerciseIndex} className="singleexercise">
-                            <div className="exercisecontainer">
-                                <h3 className="exercisetitle">
+                        <div key={exerciseIndex} className="exercise-item">
+                            <div className="exercise-item__header">
+                                <h3 className="exercise-item__title">
                                     <span>
                                         {exercise.name
                                             .substring(0, 2)
@@ -285,8 +285,8 @@ const LiveWorkoutComponent = () => {
                                     {exercise.name}
                                 </h3>
 
-                                <div className="exercisecontrol">
-                                    <div className="calorie">
+                                <div className="exercise-item__controls">
+                                    <div className="calorie-input">
                                         <Flame />
                                         <input
                                             type="number"
@@ -302,7 +302,7 @@ const LiveWorkoutComponent = () => {
                                     </div>
                                     <div className="divider"></div>
                                     <button
-                                        className="removebtn"
+                                        className="btn-remove"
                                         onClick={() =>
                                             removeExercise(exerciseIndex)
                                         }
@@ -311,20 +311,20 @@ const LiveWorkoutComponent = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="exercisebody">
-                                <div className="settitle">
-                                    <div className="setindex">Set</div>
-                                    <div className="setkg">kg</div>
-                                    <div className="setrep">Reps</div>
-                                    <div className="setremove"></div>
+                            <div className="exercise-item__body">
+                                <div className="sets-header">
+                                    <div className="col-index">Set</div>
+                                    <div className="col-weight">kg</div>
+                                    <div className="col-reps">Reps</div>
+                                    <div className="col-remove"></div>
                                 </div>
-                                <div className="setbody">
+                                <div className="sets-list">
                                     {exercise.sets.map((set, index) => (
-                                        <div className="singleset" key={index}>
-                                            <div className="singlesetindex">
+                                        <div className="set-item" key={index}>
+                                            <div className="set-item__index">
                                                 <span>{index + 1}</span>
                                             </div>
-                                            <div className="singlesetkgrep">
+                                            <div className="set-item__input">
                                                 <input
                                                     type="number"
                                                     placeholder="0"
@@ -339,7 +339,7 @@ const LiveWorkoutComponent = () => {
                                                     }
                                                 />
                                             </div>
-                                            <div className="singlesetkgrep">
+                                            <div className="set-item__input">
                                                 <input
                                                     type="number"
                                                     placeholder="0"
@@ -354,7 +354,7 @@ const LiveWorkoutComponent = () => {
                                                     }
                                                 />
                                             </div>
-                                            <div className="singlesetremove">
+                                            <div className="set-item__remove">
                                                 <button
                                                     onClick={() =>
                                                         deleteSet(
@@ -370,7 +370,7 @@ const LiveWorkoutComponent = () => {
                                     ))}
                                 </div>
                                 <button
-                                    className="addset"
+                                    className="btn-add-set"
                                     onClick={() => addSet(exerciseIndex)}
                                 >
                                     <Plus /> Add Set
@@ -381,9 +381,9 @@ const LiveWorkoutComponent = () => {
                 </div>
 
                 {activeExercises.length > 0 && (
-                    <div className="addbtncontainer">
+                    <div className="add-exercise-container">
                         <button
-                            className="addexercisebtn"
+                            className="btn-add-exercise-dashed"
                             onClick={() => setIsExerciseModalOpen(true)}
                         >
                             <Plus /> Add Another Exercise
@@ -392,9 +392,9 @@ const LiveWorkoutComponent = () => {
                 )}
             </div>
             {isExerciseModalOpen && (
-                <div className="liveworkout__exercisemodal">
-                    <div className="modalcontainer">
-                        <div className="modaltop">
+                <div className="exercise-modal">
+                    <div className="exercise-modal__container">
+                        <div className="exercise-modal__header">
                             <h3>Select Exercise</h3>
                             <button
                                 onClick={() => setIsExerciseModalOpen(false)}
@@ -402,8 +402,8 @@ const LiveWorkoutComponent = () => {
                                 <X />
                             </button>
                         </div>
-                        <div className="modalbody">
-                            <div className="exerciselist">
+                        <div className="exercise-modal__body">
+                            <div className="exercise-list">
                                 {exercises.map((ex) => (
                                     <button
                                         key={ex.id}
@@ -416,7 +416,7 @@ const LiveWorkoutComponent = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="modalfooter">
+                        <div className="exercise-modal__footer">
                             <button
                                 onClick={() => setIsExerciseModalOpen(false)}
                             >

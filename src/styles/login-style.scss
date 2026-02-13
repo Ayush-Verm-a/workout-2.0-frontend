@@ -1,187 +1,184 @@
-.login, .register {
-    &__container {
-        height: 100%;
+.auth-page {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgb(248, 250, 252);
+    position: relative;
+    overflow: hidden;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+
+    &__bg-1 {
+        position: absolute;
+        top: -10%;
+        right: -5%;
+        width: 24rem;
+        height: 24rem;
+        background-color: rgba(5, 150, 105, 0.1);
+        border-radius: 9999px;
+        filter: blur(64px);
+        pointer-events: none;
+    }
+
+    &__bg-2 {
+        position: absolute;
+        bottom: -10%;
+        left: -5%;
+        width: 24rem;
+        height: 24rem;
+        background-color: rgba(59, 130, 246, 0.1);
+        border-radius: 9999px;
+        filter: blur(64px);
+        pointer-events: none;
+    }
+}
+
+.auth-card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 28rem;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: fadeZoomIn 300ms ease-out forwards;
+
+    &__header {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        background-color: rgb(248, 250, 252);
-        position: relative;
-        overflow: hidden;
-        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
-        transition-duration: 300ms;
+        margin-bottom: 2rem;
+    }
 
-        .bg1 {
-            position: absolute;
-            top: -10%;
-            right: -5%;
-            width: 24rem;
-            height: 24rem;
-            background-color: rgba(5, 150, 105, 0.1);
-            border-radius: 9999px;
-            filter: blur(64px);
-            pointer-events: none;
+    &__icon {
+        background-color: rgb(5, 150, 105);
+        padding: 0.75rem;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2),
+            0 4px 6px -2px rgba(5, 150, 105, 0.2);
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            color: rgb(255, 255, 255);
+        }
+    }
+
+    &__title {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        font-weight: 700;
+        color: rgb(15, 23, 42);
+        margin-bottom: 0.5rem;
+    }
+
+    &__subtitle {
+        color: rgb(100, 116, 139);
+        text-align: center;
+    }
+
+    &__form {
+        &>*+* {
+            margin-top: 1rem;
         }
 
-        .bg2 {
-            position: absolute;
-            bottom: -10%;
-            left: -5%;
-            width: 24rem;
-            height: 24rem;
-            background-color: rgba(59, 130, 246, 0.1);
-            border-radius: 9999px;
-            filter: blur(64px);
-            pointer-events: none;
-        }
-
-        .authbody {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 28rem;
-            padding: 2rem;
-            background-color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgb(226, 232, 240);
-            border-radius: 1.5rem;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            animation: fadeZoomIn 300ms ease-out forwards;
-
-            .bodytop {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 2rem;
-
-                .icon {
-                    background-color: rgb(5, 150, 105);
-                    padding: 0.75rem;
-                    border-radius: 1rem;
-                    margin-bottom: 1rem;
-                    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2),
-                        0 4px 6px -2px rgba(5, 150, 105, 0.2);
-
-                    svg {
-                        width: 2rem;
-                        height: 2rem;
-                        color: rgb(255, 255, 255);
-                    }
-                }
-
-                .topheader {
-                    font-size: 1.875rem;
-                    line-height: 2.25rem;
-                    font-weight: 700;
-                    color: rgb(15, 23, 42);
-                    margin-bottom: 0.5rem;
-                }
-
-                .topcopy {
-                    color: rgb(100, 116, 139);
-                    text-align: center;
-                }
+        .form-group {
+            &>*+* {
+                margin-top: 0.5rem;
             }
 
-            .bodycred {
-                .credcontainer {
-                    label {
-                        font-size: 0.875rem;
-                        line-height: 1.25rem;
-                        font-weight: 500;
-                        color: rgb(51, 65, 85);
-                        margin-left: 0.25rem;
-                    }
+            label {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                font-weight: 500;
+                color: rgb(51, 65, 85);
+                margin-left: 0.25rem;
+            }
 
-                    .cred {
-                        position: relative;
+            .form-input {
+                position: relative;
 
-                        svg {
-                            position: absolute;
-                            left: 0.75rem;
-                            top: 0.875rem;
-                            width: 1.25rem;
-                            height: 1.25rem;
-                            color: rgb(100, 116, 139);
-                        }
-
-                        input {
-                            width: 100%;
-                            background-color: rgb(248, 250, 252);
-                            border: 1px solid rgb(203, 213, 225);
-                            color: rgb(15, 23, 42);
-                            border-radius: 0.75rem;
-                            padding-top: 0.75rem;
-                            padding-bottom: 0.75rem;
-                            padding-left: 2.5rem;
-                            padding-right: 1rem;
-                            outline: none;
-                            transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
-                        }
-
-                        input:focus {
-                            border-color: rgb(5, 150, 105);
-                        }
-                    }
+                svg {
+                    position: absolute;
+                    left: 0.75rem;
+                    top: 0.875rem;
+                    width: 1.25rem;
+                    height: 1.25rem;
+                    color: rgb(100, 116, 139);
                 }
 
-                .credcontainer>*+* {
-                    margin-top: 0.5rem;
-                }
-
-                .auth-btn {
+                input {
                     width: 100%;
-                    background-color: rgb(5, 150, 105);
-                    color: rgb(255, 255, 255);
-                    font-weight: 700;
+                    background-color: rgb(248, 250, 252);
+                    border: 1px solid rgb(203, 213, 225);
+                    color: rgb(15, 23, 42);
+                    border-radius: 0.75rem;
                     padding-top: 0.75rem;
                     padding-bottom: 0.75rem;
-                    border-radius: 0.75rem;
-                    margin-top: 1.5rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.5rem;
-                    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2),
-                        0 4px 6px -2px rgba(5, 150, 105, 0.2);
-                    transition: all 150ms ease;
+                    padding-left: 2.5rem;
+                    padding-right: 1rem;
+                    outline: none;
+                    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
 
-                    svg {
-                        width: 1.25rem;
-                        height: 1.2rem;
+                    &:focus {
+                        border-color: rgb(5, 150, 105);
                     }
                 }
+            }
+        }
 
-                .auth-btn:hover {
-                    background-color: rgb(16, 185, 129);
-                }
+        .btn-auth {
+            width: 100%;
+            background-color: rgb(5, 150, 105);
+            color: rgb(255, 255, 255);
+            font-weight: 700;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2),
+                0 4px 6px -2px rgba(5, 150, 105, 0.2);
+            transition: all 150ms ease;
+
+            svg {
+                width: 1.25rem;
+                height: 1.2rem;
             }
 
-            .bodycred>*+* {
-                margin-top: 1rem;
+            &:hover {
+                background-color: rgb(16, 185, 129);
             }
+        }
+    }
 
-            .bodybottom {
-                margin-top: 1.5rem;
-                text-align: center;
+    &__footer {
+        margin-top: 1.5rem;
+        text-align: center;
 
-                .bottomcopy {
-                    color: rgb(100, 116, 139);
-                    font-size: 0.875rem;
-                    line-height: 1.25rem;
+        &-text {
+            color: rgb(100, 116, 139);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
 
-                    button {
-                        color: rgb(5, 150, 105);
-                        font-weight: 500;
-                        transition: color 150ms ease;
-                    }
+            button {
+                color: rgb(5, 150, 105);
+                font-weight: 500;
+                transition: color 150ms ease;
 
-                    button:hover {
-                        color: rgb(16, 185, 129);
-                    }
+                &:hover {
+                    color: rgb(16, 185, 129);
                 }
             }
         }

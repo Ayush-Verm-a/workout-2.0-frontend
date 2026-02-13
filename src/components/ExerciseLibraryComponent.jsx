@@ -79,14 +79,14 @@ const ExerciseLibraryComponent = () => {
     const sortedExercises = sortExercises();
 
     return (
-        <div className="exerciselibrary__container">
-            <header className="exerciselibrary__header">
+        <div className="exercise-library">
+            <header className="exercise-library__header">
                 <h2>Exercise Library</h2>
                 <p>Explore exercises to build your perfect routine.</p>
             </header>
 
-            <div className="exerciselibrary__search">
-                <div className="librarysearch">
+            <div className="exercise-library__filters">
+                <div className="exercise-library__search-wrapper">
                     <Search />
                     <input
                         type="text"
@@ -95,11 +95,11 @@ const ExerciseLibraryComponent = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="librarycategory">
+                <div className="exercise-library__categories">
                     {categories.map((cat) => (
                         <button
                             key={cat}
-                            className={`${selectedCategory === cat ? "selected" : "notselected"}`}
+                            className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
                             onClick={() => setSelectedCategory(cat)}
                         >
                             {cat}
@@ -108,20 +108,20 @@ const ExerciseLibraryComponent = () => {
                 </div>
             </div>
 
-            <div className="exerciselibrary__body">
+            <div className="exercise-library__grid">
                 {filteredExercises.map((exercise) => (
-                    <div key={exercise.id} className="exercisecard">
-                        <div className="cardtop">
-                            <div className="cardicon">
-                                <Zap className={`${"iconemerald"}`} />
+                    <div key={exercise.id} className="exercise-card">
+                        <div className="exercise-card__header">
+                            <div className="exercise-card__icon">
+                                <Zap className="icon-emerald" />
                             </div>
-                            <span className={`${"advanced"}`}>Difficulty</span>
+                            <span className="badge badge-advanced">Difficulty</span>
                         </div>
-                        <h3 className="cardtitle">{exercise.name}</h3>
-                        <p className="cardsubtitle">{exercise.muscleGroup}</p>
-                        <p className="carddesc">Description</p>
+                        <h3 className="exercise-card__title">{exercise.name}</h3>
+                        <p className="exercise-card__subtitle">{exercise.muscleGroup}</p>
+                        <p className="exercise-card__description">Description</p>
 
-                        <div className="cardbottom">
+                        <div className="exercise-card__footer">
                             <span>
                                 <Trophy /> Type
                             </span>
@@ -134,12 +134,12 @@ const ExerciseLibraryComponent = () => {
             </div>
 
             {filteredExercises.length === 0 && (
-                <div className="exerciselibrary__nomatch">
-                    <div className="nomatchicon">
+                <div className="exercise-library__empty-state">
+                    <div className="empty-state__icon">
                         <Info />
                     </div>
-                    <h3 className="nomatchtitle">No exercises found</h3>
-                    <p className="nomatchsubtitle">
+                    <h3 className="empty-state__title">No exercises found</h3>
+                    <p className="empty-state__subtitle">
                         Try adjusting your seach or filters.
                     </p>
                 </div>

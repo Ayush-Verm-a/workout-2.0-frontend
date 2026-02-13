@@ -1,0 +1,77 @@
+.feed {
+    &__container {
+        padding: 20px;
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    &__container>*+* {
+        margin-top: 1.5rem;
+    }
+
+    &__header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
+            color: rgb(30, 41, 59);
+        }
+    }
+
+    &__stats {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1.5rem;
+
+        .statcard {
+            background-color: rgb(255, 255, 255);
+            padding: 1.5rem;
+            border: 1px solid rgb(226, 232, 240);
+            border-radius: 0.75rem;
+            box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .statcardicon {
+            background-color: rgb(219, 234, 254);
+            padding: 0.75rem;
+            color: rgb(37, 99, 235);
+            border-radius: 0.5rem;
+        }
+
+        .statcardvalue1 {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: rgb(100, 116, 139);
+            font-weight: 500;
+        }
+
+        .statcardvalue2 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            color: rgb(30, 41, 59);
+            font-weight: 700;
+        }
+    }
+
+    &__subheading {
+        margin-bottom: 10px;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 6fr 4fr;
+    }
+}
+
+@media (min-width: 768px) {
+    .feed {
+        &__stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}
