@@ -11,6 +11,7 @@ import ExerciseLibraryComponent from "./components/ExerciseLibraryComponent";
 import WorkoutDetailsComponent from "./components/WorkoutDetailsComponent";
 import FeedComponent from "./components/FeedComponent";
 import Sidebar from "./components/Sidebar";
+import Profile from "./components/Profile";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/exercises" element={<ExerciseLibraryComponent />} />
                         <Route path="/workouts/:id" element={<WorkoutDetailsComponent />} />
                         <Route path="/feed" element={<FeedComponent />} />
+                        <Route path="/profile" element={<Profile />} />
                     </Routes>
                 </main>
             </BrowserRouter>

@@ -155,6 +155,7 @@ const LiveWorkoutComponent = () => {
         WorkoutService.saveWorkout(workoutPayload)
             .then(() => {
                 console.log("Workout Saved!");
+                dispatch(WorkoutService.getAllWorkouts());
                 navigate("/workouts");
             })
             .catch((err) => console.log(err));

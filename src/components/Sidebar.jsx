@@ -1,6 +1,5 @@
 import { BicepsFlexed } from "lucide-react";
 import { useState, useEffect } from "react";
-import UserService from "../services/UserService";
 import {
     LayoutDashboard,
     Dumbbell,
@@ -13,12 +12,14 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import "../styles/sidebar-style.scss";
 import { useDispatch, useSelector } from "react-redux";
+import { setCurrentView } from "../store/slices/appSlice";
 
-const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
+const NavItem = ({ view, label, icon: Icon, current, link }) => {
+    const dispatch = useDispatch();
     return (
         <Link to={`/${link}`}>
             <button
-                onClick={() => onClick(view)}
+                onClick={() => dispatch(setCurrentView(view))}
                 className={`nav-item ${current === view ? "nav-item--active" : ""}`}
             >
                 <Icon />
@@ -30,8 +31,7 @@ const NavItem = ({ view, label, icon: Icon, current, onClick, link }) => {
 
 const Sidebar = () => {
     const { user, isAuthenticated } = useSelector((store) => store.user);
-    const [currentView, setCurrentView] = useState("");
-    // const [user, setUser] = useState(null);
+    const { currentView } = useSelector((store) => store.app);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -40,17 +40,17 @@ const Sidebar = () => {
         dispatch(AuthService.getCurrentUser());
     }, [isAuthenticated]);
 
-    const profileClick = () => { };
+    const profileClick = () => {};
 
     const handleLogout = () => {
-        setCurrentView("");
+        dispatch("");
         dispatch(AuthService.logout());
         navigate("/home");
     };
 
     return (
         <aside className="sidebar">
-            <Link to="/" onClick={() => setCurrentView("")}>
+            <Link to="/" onClick={() => dispatch(setCurrentView(""))}>
                 <div className="sidebar__header">
                     <div className="sidebar__icon">
                         <BicepsFlexed />
@@ -65,7 +65,6 @@ const Sidebar = () => {
                     label="Feed"
                     icon={LayoutDashboard}
                     current={currentView}
-                    onClick={setCurrentView}
                     link="feed"
                 />
                 <NavItem
@@ -73,7 +72,6 @@ const Sidebar = () => {
                     label="Workouts"
                     icon={Dumbbell}
                     current={currentView}
-                    onClick={setCurrentView}
                     link="workouts"
                 />
                 <NavItem
@@ -81,7 +79,6 @@ const Sidebar = () => {
                     label="Start Workout"
                     icon={Timer}
                     current={currentView}
-                    onClick={setCurrentView}
                     link="live-workout"
                 />
                 <NavItem
@@ -89,24 +86,27 @@ const Sidebar = () => {
                     label="Exercises"
                     icon={NotebookTabs}
                     current={currentView}
-                    onClick={setCurrentView}
                     link="exercises"
                 />
             </nav>
 
             {isAuthenticated && user && (
                 <div className="sidebar__footer">
-                    <Link>
+                    <Link to="/profile">
                         <button
-                            onClick={() => setCurrentView("PROFILE")}
+                            onClick={() => dispatch(setCurrentView("PROFILE"))}
                             className={`user-profile ${currentView === "PROFILE" ? "user-profile--active" : ""}`}
                         >
                             <div className="user-profile__avatar">
                                 {user.name.charAt(0).toUpperCase()}
                             </div>
                             <div className="user-profile__info">
-                                <p className="user-profile__name">{user.name}</p>
-                                <p className="user-profile__email">{user.email}</p>
+                                <p className="user-profile__name">
+                                    {user.name}
+                                </p>
+                                <p className="user-profile__email">
+                                    {user.email}
+                                </p>
                             </div>
                         </button>
                     </Link>
@@ -123,7 +123,9 @@ const Sidebar = () => {
                 <div className="sidebar__footer">
                     <div className="sidebar__login">
                         <Link to="/login">
-                            <button onClick={() => setCurrentView("")}>
+                            <button
+                                onClick={() => dispatch(setCurrentView(""))}
+                            >
                                 <LogIn />
                                 <span>Sign In</span>
                             </button>
