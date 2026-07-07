@@ -1,14 +1,14 @@
-$color1: #03A6A1;
-$color2: #FFE3BB;
-$color3: #FFA673;
-$color4: #FF4F0F;
+$color1: #03a6a1;
+$color2: #ffe3bb;
+$color3: #ffa673;
+$color4: #ff4f0f;
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 
-    font-family: "Alfa Slab One", serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 400;
     font-style: normal;
 }
@@ -48,6 +48,16 @@ button {
     font-weight: 400;
     font-style: normal;
 }
+
+/*<weight>: Use a value from 100 to 900
+<uniquifier>: Use a unique and descriptive class name*/
+
+/*.montserrat-<uniquifier> {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}*/
 
 @media (min-width: 768px) {
     .app {

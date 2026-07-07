@@ -6,107 +6,102 @@ import { useDispatch, useSelector } from "react-redux";
 import "../styles/list-workout-style.scss";
 
 const ListWorkoutComponent = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const { isAuthenticated } = useSelector((store) => store.user);
-    const { workouts } = useSelector((store) => store.workout);
+  const { isAuthenticated } = useSelector((store) => store.user);
+  const { workouts } = useSelector((store) => store.workout);
+  console.log(workouts);
 
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate("/home");
-        }
-        if (!workouts || workouts.length === 0) {
-            dispatch(WorkoutService.getAllWorkouts());
-        }
-    }, [dispatch, isAuthenticated]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/home");
+    }
+    if (!workouts || workouts.length === 0) {
+      dispatch(WorkoutService.getAllWorkouts());
+    }
+  }, [dispatch, isAuthenticated]);
 
-    const getWorkouts = () => {
-        dispatch(WorkoutService.getAllWorkouts());
-    };
+  const getWorkouts = () => {
+    dispatch(WorkoutService.getAllWorkouts());
+  };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "short",
-        });
-    };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+    });
+  };
 
-    const deleteWorkout = (id) => {
-        WorkoutService.deleteWorkout(id)
-            .then((res) => {
-                getWorkouts();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+  const deleteWorkout = (id) => {
+    WorkoutService.deleteWorkout(id)
+      .then((res) => {
+        getWorkouts();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    return (
-        <div className="listworkout__container">
-            <div>
-                <h1>Workout History</h1>
+  return (
+    <div className="listworkout__container">
+      <div>
+        <h1>Workout History</h1>
+      </div>
+
+      <div className="listworkout__subcontainer">
+        <div className="listworkout__row listworkout__head">
+          {workouts.length == 0 ? (
+            <div className="listworkout__noworkout">
+              No workouts logged yet. Start your journey today!
             </div>
+          ) : (
+            workouts.map((workout) => (
+              <div data-key={workout.id} className="listworkout__workoutrow">
+                <div className="listworkout__workoutdata">
+                  <div className="listworkout__workoutdatahead">
+                    <span>{workout.title.substring(0, 3)}</span>
+                  </div>
 
-            <div className="listworkout__subcontainer">
-                <div className="listworkout__row listworkout__head">
-                    {workouts.length == 0 ? (
-                        <div className="listworkout__noworkout">
-                            No workouts logged yet. Start your journey today!
-                        </div>
-                    ) : (
-                        workouts.map((workout) => (
-                            <div
-                                key={workout.id}
-                                className="listworkout__workoutrow"
-                            >
-                                <div className="listworkout__workoutdata">
-                                    <div className="listworkout__workoutdatahead">
-                                        <span>
-                                            {workout.title.substring(0, 3)}
-                                        </span>
-                                    </div>
-
-                                    <div className="listworkout__workoutdatabody">
-                                        <h3 className="">{workout.title}</h3>
-                                        <div className="listworkout__workoutdatabodycontainer">
-                                            <span>
-                                                <Calendar />
-                                                {new Date(
-                                                    workout.date,
-                                                ).toLocaleDateString()}
-                                            </span>
-                                            <span>
-                                                <Clock />
-                                                {workout.duration} min
-                                            </span>
-                                            <span>
-                                                <Flame />
-                                                {workout.caloriesBurned} cal
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button
-                                    title="Delete Workout"
-                                    className="listworkout__deletebtn"
-                                >
-                                    <Trash2 />
-                                </button>
-                            </div>
-                        ))
-                    )}
+                  <div className="listworkout__workoutdatabody">
+                    <h3 className="">{workout.title}</h3>
+                    <div className="listworkout__workoutdatabodycontainer">
+                      <span>
+                        <Calendar />
+                        {new Date(workout.date).toLocaleDateString()}
+                      </span>
+                      <span>
+                        <Clock />
+                        {workout.duration} min
+                      </span>
+                      <span>
+                        <Flame />
+                        {workout.caloriedBurned} cal
+                      </span>
+                    </div>
+                  </div>
                 </div>
-            </div>
+                <button
+                  title="Delete Workout"
+                  className="listworkout__deletebtn"
+                  onClick={() => deleteWorkout(workout.id)}
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            ))
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default ListWorkoutComponent;
 
 {
-    /* <div
+  /* <div
     onClick={() => navigate(`/workouts/${workout.id}`)}
     className="listworkout__details"
 >
