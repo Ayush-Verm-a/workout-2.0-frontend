@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
+import WorkoutModalComponent from "./WorkoutModalComponent";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, Flame, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +9,7 @@ import "../styles/list-workout-style.scss";
 const ListWorkoutComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [selectedWorkoutId, setSelectedWorkoutId] = useState(null);
 
   const { isAuthenticated } = useSelector((store) => store.user);
   const { workouts } = useSelector((store) => store.workout);
@@ -58,7 +60,12 @@ const ListWorkoutComponent = () => {
             </div>
           ) : (
             workouts.map((workout) => (
-              <div data-key={workout.id} className="listworkout__workoutrow">
+              <div 
+                key={workout.id} 
+                data-key={workout.id} 
+                className="listworkout__workoutrow"
+                onClick={() => setSelectedWorkoutId(workout.id)}
+              >
                 <div className="listworkout__workoutdata">
                   <div className="listworkout__workoutdatahead">
                     <span>{workout.title.substring(0, 3)}</span>
@@ -85,7 +92,10 @@ const ListWorkoutComponent = () => {
                 <button
                   title="Delete Workout"
                   className="listworkout__deletebtn"
-                  onClick={() => deleteWorkout(workout.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteWorkout(workout.id);
+                  }}
                 >
                   <Trash2 />
                 </button>
@@ -94,6 +104,12 @@ const ListWorkoutComponent = () => {
           )}
         </div>
       </div>
+      {selectedWorkoutId && (
+        <WorkoutModalComponent
+          workoutId={selectedWorkoutId}
+          onClose={() => setSelectedWorkoutId(null)}
+        />
+      )}
     </div>
   );
 };
