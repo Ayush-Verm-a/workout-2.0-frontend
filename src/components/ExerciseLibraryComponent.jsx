@@ -115,8 +115,8 @@ const ExerciseLibraryComponent = () => {
               <div className="exercise-card__icon">
                 <Zap className="icon-emerald" />
               </div>
-              <span className="badge badge-advanced">
-                {exercise.difficulty}
+              <span className={`badge badge-${(exercise.difficulty || 'beginner').toLowerCase()}`}>
+                {exercise.difficulty || 'Beginner'}
               </span>
             </div>
             <h3 className="exercise-card__title">{exercise.name}</h3>

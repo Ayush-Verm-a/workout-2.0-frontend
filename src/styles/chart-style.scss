@@ -1,33 +1,51 @@
 .chart {
-    &__container {
-        display: grid;
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-    }
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
 
-    &__subcontainer {
-        background-color: rgb(255, 255, 255);
-        padding: 1.5rem;
-        border: 1px solid rgb(226, 232, 240);
-        border-radius: 0.75rem;
-        height: 20rem;
-        box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+  &__subcontainer {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    height: 20rem;
+    box-shadow: var(--shadow-md);
 
-        h3 {
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: rgb(30, 41, 59);
-        }
+    h3 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
     }
+    
+    /* Recharts responsive container overrides for dark mode readability */
+    .recharts-cartesian-grid-horizontal line,
+    .recharts-cartesian-grid-vertical line {
+      stroke: var(--border-highlight);
+    }
+    .recharts-text {
+      fill: var(--text-secondary) !important;
+    }
+    .recharts-tooltip-wrapper .recharts-default-tooltip {
+      background-color: var(--bg-secondary) !important;
+      border: 1px solid var(--border-highlight) !important;
+      border-radius: 0.5rem;
+      color: var(--text-primary) !important;
+      box-shadow: var(--shadow-lg);
+    }
+  }
 }
 
 @media (min-width: 1024px) {
-    .chart {
-        &__container {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+  .chart {
+    &__container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 }
