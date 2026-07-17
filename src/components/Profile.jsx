@@ -9,9 +9,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate("/home");
-        }
+
         console.log(user);
     }, [user, isAuthenticated]);
 

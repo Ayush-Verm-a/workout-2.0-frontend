@@ -36,8 +36,7 @@ const userSlice = createSlice({
             state.user = null;
         },
         logoutFailed(state) {
-            state.isAuthenticated = state.isAuthenticated;
-            state.user = state.user;
+            // Keep current state on failure
         },
     },
 });

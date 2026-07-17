@@ -7,6 +7,7 @@ import {
   NotebookTabs,
   LogOut,
   LogIn,
+  Bot,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
@@ -38,7 +39,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     dispatch(AuthService.getCurrentUser());
-  }, [isAuthenticated]);
+  }, [dispatch]);
 
   const profileClick = () => {};
 
@@ -86,6 +87,13 @@ const Sidebar = () => {
           icon={NotebookTabs}
           current={currentView}
           link="exercises"
+        />
+        <NavItem
+          view="AICOACH"
+          label="AI Coach"
+          icon={Bot}
+          current={currentView}
+          link="ai-coach"
         />
       </nav>
 

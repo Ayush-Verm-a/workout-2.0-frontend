@@ -11,7 +11,11 @@ const AddWorkoutComponent = () => {
     const saveWorkout = (e) => {
         e.preventDefault();
 
-        const workout = { title, duration, caloriesBurned };
+        const workout = { 
+            title, 
+            duration: parseInt(duration) || 0, 
+            caloriesBurned: parseInt(caloriesBurned) || 0 
+        };
 
         WorkoutService.saveWorkout(workout)
             .then((res) => {

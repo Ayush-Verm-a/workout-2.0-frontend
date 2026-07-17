@@ -16,9 +16,7 @@ const FeedComponent = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate("/home");
-        }
+
         if (!workouts || workouts.length === 0) {
             dispatch(WorkoutService.getAllWorkouts());
         }

@@ -28,6 +28,7 @@ const LiveWorkoutComponent = () => {
   const [totalCalories, setTotalCalories] = useState(0);
   const [calories, setCalories] = useState([]);
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,9 +36,7 @@ const LiveWorkoutComponent = () => {
   console.log(exercises);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/home");
-    }
+
     if (!exercises || exercises.length === 0) {
       dispatch(WorkoutService.getDefinitions());
     }
@@ -111,6 +110,7 @@ const LiveWorkoutComponent = () => {
       setCalories(newCalories);
     }
 
+    setSearchQuery("");
     setIsExerciseModalOpen(false);
   };
 
@@ -368,14 +368,26 @@ const LiveWorkoutComponent = () => {
                 <X />
               </button>
             </div>
+            <div className="exercise-modal__search" style={{ padding: '0 16px', marginBottom: '16px' }}>
+              <input 
+                type="text" 
+                placeholder="Search exercises..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+              />
+            </div>
             <div className="exercise-modal__body">
               <div className="exercise-list">
-                {exercises.map((ex) => (
+                {exercises
+                  .filter(ex => ex.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                  .map((ex) => (
                   <button
+                    key={ex.id}
                     data-key={ex.id}
                     onClick={() => addExerciseToWorkout(ex.id)}
                   >
-                    {ex.name} {ex.id}
+                    {ex.name}
                     <Plus />
                   </button>
                 ))}

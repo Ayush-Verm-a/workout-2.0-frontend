@@ -20,7 +20,7 @@ const Home = () => {
                 <div className="herobody">
                     <div className="herobodytag">
                         <Zap />
-                        <span>Powered by GEMINI</span>
+                        <span>Powered by AI</span>
                     </div>
                     <h1 className="herobodyheading">
                         Elevate your <span>fitness</span>
@@ -72,7 +72,7 @@ const Home = () => {
                             <h3>AI Coach</h3>
                             <p>
                                 Chat with our advanced AI assistant powered by
-                                Gemini. Get instant advice on form, nutrition,
+                                AI. Get instant advice on form, nutrition,
                                 and recovery.
                             </p>
                         </div>

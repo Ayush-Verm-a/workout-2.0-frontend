@@ -17,14 +17,17 @@ class AuthService {
 
     return async (dispatch) => {
       try {
-        const response = await apiClient.post(
-          "/auth/login",
-          credentials,
-        );
-        dispatch(loginSuccess(response.data));
-        console.log(response.data);
+        const response = await apiClient.post("/auth/login", credentials);
+        
         const token = response.data.accessToken;
         localStorage.setItem("token", token);
+        
+        // Immediately fetch user info to populate state fully
+        const userResponse = await apiClient.get("/users/me");
+        dispatch(fetchUserSuccess(userResponse.data));
+        
+        // Still dispatch loginSuccess as a fallback or if other sagas/reducers listen to it
+        dispatch(loginSuccess(response.data));
       } catch (error) {
         dispatch(loginFailed());
       }
@@ -48,8 +51,8 @@ class AuthService {
   logout() {
     return async (dispatch) => {
       try {
-        dispatch(logoutSuccess());
         localStorage.removeItem("token");
+        dispatch(logoutSuccess());
       } catch (error) {
         dispatch(logoutFailed());
       }

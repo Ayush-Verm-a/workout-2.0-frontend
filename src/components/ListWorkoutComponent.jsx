@@ -16,9 +16,7 @@ const ListWorkoutComponent = () => {
   console.log(workouts);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/home");
-    }
+
     if (!workouts || workouts.length === 0) {
       dispatch(WorkoutService.getAllWorkouts());
     }
