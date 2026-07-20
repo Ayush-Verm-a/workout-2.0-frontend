@@ -40,12 +40,13 @@
 
 html,
 body {
-  min-height: 100vh;
+  height: 100dvh;
   margin: 0;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 button {
@@ -87,7 +88,7 @@ button {
     background-color: var(--bg-primary);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100dvh;
     overflow: hidden;
   }
 
@@ -95,9 +96,10 @@ button {
     flex: 1 1 0%;
     /* Extra padding on mobile to account for floating nav bar */
     padding-bottom: 5.5rem; 
+    padding-top: 4rem;
     position: relative;
     overflow-y: auto;
-    height: 100vh;
+    overflow-x: hidden;
   }
 }
 
@@ -131,8 +133,8 @@ button {
 
     &__body {
       padding-top: 0rem;
-      height: 100vh;
       overflow-y: auto;
+      overflow-x: hidden;
       padding-bottom: 0rem;
     }
   }

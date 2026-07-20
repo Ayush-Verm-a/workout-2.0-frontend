@@ -49,7 +49,34 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="sidebar">
+    <>
+      {/* Mobile Top Header */}
+      <div className="sidebar__mobile-header">
+        <Link to="/" onClick={() => dispatch(setCurrentView(""))} className="brand">
+          <BicepsFlexed />
+          <span>Workout App</span>
+        </Link>
+        {isAuthenticated && user && (
+          <div className="actions">
+            <Link to="/profile" onClick={() => dispatch(setCurrentView("PROFILE"))}>
+              <div className="avatar">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+            </Link>
+            <button className="logout-btn" onClick={handleLogout}>
+              <LogOut />
+            </button>
+          </div>
+        )}
+        {!isAuthenticated && (
+           <div className="actions">
+             <Link to="/login" onClick={() => dispatch(setCurrentView(""))}>
+               <LogIn />
+             </Link>
+           </div>
+        )}
+      </div>
+      <aside className="sidebar">
       <Link to="/" onClick={() => dispatch(setCurrentView(""))}>
         <div className="sidebar__header">
           <div className="sidebar__icon">
@@ -135,6 +162,7 @@ const Sidebar = () => {
         </div>
       )}
     </aside>
+    </>
   );
 };
 
