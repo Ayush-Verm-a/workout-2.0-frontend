@@ -12,6 +12,7 @@ import Sidebar from "./components/Sidebar";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AICoachComponent from "./components/AICoachComponent";
+import WorkoutPlanComponent from "./components/WorkoutPlanComponent";
 import { useSelector } from "react-redux";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/workouts" element={<ProtectedRoute><ListWorkoutComponent /></ProtectedRoute>} />
                         <Route path="/add-workout" element={<ProtectedRoute><AddWorkoutComponent /></ProtectedRoute>} />
                         <Route path="/live-workout" element={<ProtectedRoute><LiveWorkoutComponent /></ProtectedRoute>} />
+                        <Route path="/workout-plan" element={<ProtectedRoute><WorkoutPlanComponent /></ProtectedRoute>} />
                         <Route path="/exercises" element={<ProtectedRoute><ExerciseLibraryComponent /></ProtectedRoute>} />
                         <Route path="/feed" element={<ProtectedRoute><FeedComponent /></ProtectedRoute>} />
                         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

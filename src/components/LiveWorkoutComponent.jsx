@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import WorkoutService from "../services/WorkoutService";
 import "../styles/live-workout-style.scss";
 import {
@@ -31,16 +31,31 @@ const LiveWorkoutComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  console.log(exercises);
-
   useEffect(() => {
-
     if (!exercises || exercises.length === 0) {
       dispatch(WorkoutService.getDefinitions());
     }
   }, [dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    const state = location.state;
+    if (!state?.fromPlan || !Array.isArray(state.exercises)) {
+      return;
+    }
+
+    setWorkoutTitle(state.title || "New Workout");
+    setActiveExercises(state.exercises);
+    setCalories(state.exercises.map(() => 0));
+    setTotalCalories(0);
+    setSeconds(0);
+    setIsActive(false);
+    setIsPaused(false);
+
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.state, location.pathname, navigate, setActiveExercises]);
 
   useEffect(() => {
     let interval = null;

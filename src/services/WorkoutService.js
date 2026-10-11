@@ -49,6 +49,18 @@ class WorkoutService {
     saveDefinition(definition) {
         return apiClient.post("/definitions", definition);
     }
+
+    getWorkoutPlan() {
+        return apiClient.get("/workout-plans");
+    }
+
+    createWorkoutPlan(payload) {
+        return apiClient.post("/workout-plans", payload);
+    }
+
+    updateWorkoutPlan(payload) {
+        return apiClient.put("/workout-plans", payload);
+    }
 }
 
 export default new WorkoutService();

@@ -8,6 +8,7 @@ import {
   LogOut,
   LogIn,
   Bot,
+  CalendarDays,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
@@ -107,6 +108,13 @@ const Sidebar = () => {
           icon={Timer}
           current={currentView}
           link="live-workout"
+        />
+        <NavItem
+          view="WORKOUTPLAN"
+          label="Workout Plan"
+          icon={CalendarDays}
+          current={currentView}
+          link="workout-plan"
         />
         <NavItem
           view="EXERCISES"
