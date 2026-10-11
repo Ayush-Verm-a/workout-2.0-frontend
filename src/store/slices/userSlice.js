@@ -3,46 +3,68 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: null,
     isAuthenticated: false,
+    status: "idle",
+    error: null,
 };
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        loginSuccess(state, action) {
+        authLoading(state) {
+            state.status = "loading";
+            state.error = null;
+        },
+        loginSuccess(state) {
             state.isAuthenticated = true;
+            state.status = "ready";
+            state.error = null;
         },
-        loginFailed(state) {
+        loginFailed(state, action) {
             state.isAuthenticated = false;
             state.user = null;
+            state.status = "ready";
+            state.error = action.payload || "Login failed";
         },
-        registerSuccess(state, action) {
+        registerSuccess(state) {
             state.isAuthenticated = false;
+            state.status = "ready";
+            state.error = null;
         },
-        registerFailed(state) {
+        registerFailed(state, action) {
             state.isAuthenticated = false;
             state.user = null;
+            state.status = "ready";
+            state.error = action.payload || "Registration failed";
         },
         fetchUserSuccess(state, action) {
             state.isAuthenticated = true;
             state.user = action.payload;
+            state.status = "ready";
+            state.error = null;
         },
         fetchUserFailed(state) {
             state.isAuthenticated = false;
             state.user = null;
+            state.status = "ready";
+        },
+        clearAuthError(state) {
+            state.error = null;
         },
         logoutSuccess(state) {
             state.isAuthenticated = false;
             state.user = null;
+            state.status = "ready";
+            state.error = null;
         },
         logoutFailed(state) {
-            // Keep current state on failure
         },
     },
 });
 
 export default userSlice.reducer;
 export const {
+    authLoading,
     fetchUserSuccess,
     fetchUserFailed,
     loginSuccess,
@@ -51,4 +73,5 @@ export const {
     logoutFailed,
     registerSuccess,
     registerFailed,
+    clearAuthError,
 } = userSlice.actions;

@@ -1,5 +1,4 @@
 import { BicepsFlexed } from "lucide-react";
-import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   Dumbbell,
@@ -10,18 +9,25 @@ import {
   Bot,
   CalendarDays,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import "../styles/sidebar-style.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentView } from "../store/slices/appSlice";
+
+const PATH_TO_VIEW = {
+  "/feed": "FEED",
+  "/workouts": "WORKOUTS",
+  "/live-workout": "STARTWORKOUT",
+  "/workout-plan": "WORKOUTPLAN",
+  "/exercises": "EXERCISES",
+  "/ai-coach": "AICOACH",
+  "/profile": "PROFILE",
+};
 
 const NavItem = ({ view, label, icon: Icon, current, link }) => {
-  const dispatch = useDispatch();
   return (
     <Link to={`/${link}`}>
       <button
-        onClick={() => dispatch(setCurrentView(view))}
         className={`nav-item ${current === view ? "nav-item--active" : ""}`}
       >
         <Icon />
@@ -33,16 +39,11 @@ const NavItem = ({ view, label, icon: Icon, current, link }) => {
 
 const Sidebar = () => {
   const { user, isAuthenticated } = useSelector((store) => store.user);
-  const { currentView } = useSelector((store) => store.app);
+  const location = useLocation();
+  const currentView = PATH_TO_VIEW[location.pathname] || "";
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(AuthService.getCurrentUser());
-  }, [dispatch]);
-
-  const profileClick = () => {};
 
   const handleLogout = () => {
     dispatch(AuthService.logout());
@@ -51,15 +52,14 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Top Header */}
       <div className="sidebar__mobile-header">
-        <Link to="/" onClick={() => dispatch(setCurrentView(""))} className="brand">
+        <Link to="/" className="brand">
           <BicepsFlexed />
           <span>Workout App</span>
         </Link>
         {isAuthenticated && user && (
           <div className="actions">
-            <Link to="/profile" onClick={() => dispatch(setCurrentView("PROFILE"))}>
+            <Link to="/profile">
               <div className="avatar">
                 {user.name.charAt(0).toUpperCase()}
               </div>
@@ -71,14 +71,14 @@ const Sidebar = () => {
         )}
         {!isAuthenticated && (
            <div className="actions">
-             <Link to="/login" onClick={() => dispatch(setCurrentView(""))}>
+             <Link to="/login">
                <LogIn />
              </Link>
            </div>
         )}
       </div>
       <aside className="sidebar">
-      <Link to="/" onClick={() => dispatch(setCurrentView(""))}>
+      <Link to="/">
         <div className="sidebar__header">
           <div className="sidebar__icon">
             <BicepsFlexed />
@@ -88,55 +88,18 @@ const Sidebar = () => {
       </Link>
 
       <nav className="sidebar__nav">
-        <NavItem
-          view="FEED"
-          label="Feed"
-          icon={LayoutDashboard}
-          current={currentView}
-          link="feed"
-        />
-        <NavItem
-          view="WORKOUTS"
-          label="Workouts"
-          icon={Dumbbell}
-          current={currentView}
-          link="workouts"
-        />
-        <NavItem
-          view="STARTWORKOUT"
-          label="Start Workout"
-          icon={Timer}
-          current={currentView}
-          link="live-workout"
-        />
-        <NavItem
-          view="WORKOUTPLAN"
-          label="Workout Plan"
-          icon={CalendarDays}
-          current={currentView}
-          link="workout-plan"
-        />
-        <NavItem
-          view="EXERCISES"
-          label="Exercises"
-          icon={NotebookTabs}
-          current={currentView}
-          link="exercises"
-        />
-        <NavItem
-          view="AICOACH"
-          label="AI Coach"
-          icon={Bot}
-          current={currentView}
-          link="ai-coach"
-        />
+        <NavItem view="FEED" label="Feed" icon={LayoutDashboard} current={currentView} link="feed" />
+        <NavItem view="WORKOUTS" label="Workouts" icon={Dumbbell} current={currentView} link="workouts" />
+        <NavItem view="STARTWORKOUT" label="Start Workout" icon={Timer} current={currentView} link="live-workout" />
+        <NavItem view="WORKOUTPLAN" label="Workout Plan" icon={CalendarDays} current={currentView} link="workout-plan" />
+        <NavItem view="EXERCISES" label="Exercises" icon={NotebookTabs} current={currentView} link="exercises" />
+        <NavItem view="AICOACH" label="AI Coach" icon={Bot} current={currentView} link="ai-coach" />
       </nav>
 
       {isAuthenticated && user && (
         <div className="sidebar__footer">
           <Link to="/profile">
             <button
-              onClick={() => dispatch(setCurrentView("PROFILE"))}
               className={`user-profile ${currentView === "PROFILE" ? "user-profile--active" : ""}`}
             >
               <div className="user-profile__avatar">
@@ -161,7 +124,7 @@ const Sidebar = () => {
         <div className="sidebar__footer">
           <div className="sidebar__login">
             <Link to="/login">
-              <button onClick={() => dispatch(setCurrentView(""))}>
+              <button>
                 <LogIn />
                 <span>Sign In</span>
               </button>

@@ -29,6 +29,8 @@ const LiveWorkoutComponent = () => {
   const [calories, setCalories] = useState([]);
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [saveError, setSaveError] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -142,24 +144,31 @@ const LiveWorkoutComponent = () => {
   };
 
   const finishWorkout = () => {
-    setIsActive(false);
-    setIsPaused(false);
-
     const allSets = [];
 
     activeExercises.forEach((ex) => {
       ex.sets.forEach((s) => {
         allSets.push({
-          weight: s.weight,
-          reps: s.reps,
+          weight: Number(s.weight) || 0,
+          reps: Number(s.reps) || 0,
           setNumber: s.setNumber,
-          definition: ex.definitionId,
+          definition: { id: ex.definitionId },
         });
       });
     });
 
+    if (allSets.length === 0) {
+      setSaveError("Add at least one set before finishing.");
+      return;
+    }
+
+    setIsActive(false);
+    setIsPaused(false);
+    setSaving(true);
+    setSaveError("");
+
     const workoutPayload = {
-      title: workoutTitle,
+      title: workoutTitle.trim() || "New Workout",
       duration: Math.floor(seconds / 60),
       caloriesBurned: totalCalories,
       sets: allSets,
@@ -167,11 +176,13 @@ const LiveWorkoutComponent = () => {
 
     WorkoutService.saveWorkout(workoutPayload)
       .then(() => {
-        console.log("Workout Saved!");
         dispatch(WorkoutService.getAllWorkouts());
         navigate("/workouts");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setSaveError(err?.response?.data?.error || "Could not save workout. Try again.");
+      })
+      .finally(() => setSaving(false));
   };
 
   const handleAddCalories = (e, exerciseIndex) => {
@@ -238,8 +249,8 @@ const LiveWorkoutComponent = () => {
                   </>
                 )}
               </button>
-              <button onClick={finishWorkout} className="btn-finish">
-                <Save /> Finish
+              <button onClick={finishWorkout} className="btn-finish" disabled={saving}>
+                <Save /> {saving ? "Saving…" : "Finish"}
               </button>
             </>
           )}
@@ -264,6 +275,7 @@ const LiveWorkoutComponent = () => {
             onChange={(e) => setWorkoutTitle(e.target.value)}
           />
         </div>
+        {saveError && <div className="form-error">{saveError}</div>}
 
         {activeExercises.length === 0 && (
           <div className="empty-state">

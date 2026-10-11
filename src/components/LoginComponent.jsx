@@ -1,29 +1,38 @@
 import { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
-import { useNavigate, Link } from "react-router-dom";
-import { Activity, ArrowRight, Lock, Mail, UserIcon } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Activity, ArrowRight, Lock, Mail } from "lucide-react";
 import "../styles/login-style.scss";
 import { useDispatch, useSelector } from "react-redux";
+import { clearAuthError } from "../store/slices/userSlice";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [submitting, setSubmitting] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
-    const { isAuthenticated, user } = useSelector((store) => store.user);
+    const { isAuthenticated, error } = useSelector((store) => store.user);
+    const redirectTo = location.state?.from || "/feed";
 
     const handleLogin = (e) => {
         e.preventDefault();
-        const credentials = { email, password };
-
-        dispatch(AuthService.login(credentials));
+        setSubmitting(true);
+        dispatch(AuthService.login({ email, password }))
+            .catch(() => {})
+            .finally(() => setSubmitting(false));
     };
 
     useEffect(() => {
+        dispatch(clearAuthError());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (isAuthenticated) {
-            navigate("/home");
+            navigate(redirectTo, { replace: true });
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, navigate, redirectTo]);
 
     return (
         <div className="auth-page">
@@ -37,7 +46,8 @@ const LoginComponent = () => {
                     <h1 className="auth-card__title">Workout App</h1>
                     <p className="auth-card__subtitle">Welcome back! Ready to crush it?</p>
                 </div>
-                <form className="auth-card__form">
+                <form className="auth-card__form" onSubmit={handleLogin}>
+                    {error && <div className="form-error">{error}</div>}
                     <div className="form-group">
                         <label>Email</label>
                         <div className="form-input">
@@ -47,6 +57,7 @@ const LoginComponent = () => {
                                 value={email}
                                 placeholder="your@example.com"
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -59,11 +70,12 @@ const LoginComponent = () => {
                                 value={password}
                                 placeholder="*********"
                                 onChange={(e) => setPassword(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
-                    <button className="btn-auth" onClick={handleLogin}>
-                        Login
+                    <button className="btn-auth" type="submit" disabled={submitting}>
+                        {submitting ? "Signing in…" : "Login"}
                         <ArrowRight />
                     </button>
                 </form>
@@ -71,7 +83,7 @@ const LoginComponent = () => {
                 <div className="auth-card__footer">
                     <p className="auth-card__footer-text">
                         Don't have an account?{" "}
-                        <button onClick={() => navigate("/register")}>
+                        <button type="button" onClick={() => navigate("/register")}>
                             Sign Up
                         </button>
                     </p>

@@ -28,6 +28,35 @@
     }
   }
 
+  &__add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    input,
+    select {
+      flex: 1 1 10rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: #fff;
+    }
+  }
+
+  &__message {
+    color: var(--accent-primary);
+    font-weight: 600;
+  }
+
   &__filters {
     display: flex;
     flex-direction: column;

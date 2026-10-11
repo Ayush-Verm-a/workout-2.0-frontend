@@ -1,22 +1,22 @@
-import axios from "axios";
 import { apiClient } from "../api/axiosConfig";
 import {
     fetchDefinitionFailed,
     fetchDefinitionSuccess,
     fetchWorkoutFailed,
+    fetchWorkoutStart,
     fetchWorkoutSuccess,
 } from "../store/slices/workoutSlice";
+import { getErrorMessage } from "../utils/errorMessage";
 
 class WorkoutService {
     getAllWorkouts() {
-        // return apiClient.get("/workouts");
-
         return async (dispatch) => {
+            dispatch(fetchWorkoutStart());
             try {
                 const response = await apiClient.get("/workouts");
                 dispatch(fetchWorkoutSuccess(response.data));
             } catch (error) {
-                dispatch(fetchWorkoutFailed());
+                dispatch(fetchWorkoutFailed(getErrorMessage(error, "Failed to load workouts")));
             }
         };
     }
@@ -34,8 +34,6 @@ class WorkoutService {
     }
 
     getDefinitions() {
-        // return apiClient.get("/definitions");
-
         return async (dispatch) => {
             try {
                 const response = await apiClient.get("/definitions");

@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, Bot } from "lucide-react";
-import { useSelector } from "react-redux";
+import { Send, Bot } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { apiClient } from "../api/axiosConfig";
+import WorkoutService from "../services/WorkoutService";
 import "../styles/ai-coach-page-style.scss";
 
 const AICoachComponent = () => {
@@ -14,12 +15,17 @@ const AICoachComponent = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const { workouts } = useSelector((store) => store.workout);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    dispatch(WorkoutService.getAllWorkouts());
+  }, [dispatch]);
 
   useEffect(() => {
     scrollToBottom();
@@ -35,15 +41,22 @@ const AICoachComponent = () => {
     setIsTyping(true);
 
     try {
+      const recentWorkouts = (workouts || [])
+        .slice(0, 5)
+        .map((w) => `${w.title} (${w.duration || 0} min)`)
+        .join("; ");
+      const context = user?.name
+        ? `User: ${user.name}. Recent workouts: ${recentWorkouts || "none"}. `
+        : "";
+
       const response = await apiClient.post("/chat/completions", {
-        prompt: userMessage.content
+        prompt: `${context}${userMessage.content}`,
       });
       
       const responseText = response.data;
       setMessages((prev) => [...prev, { role: "assistant", content: responseText }]);
     } catch (error) {
-      console.error("Chat API Error:", error);
-      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting to my brain right now. Please try again later!" }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting right now. Please try again later." }]);
     } finally {
       setIsTyping(false);
     }

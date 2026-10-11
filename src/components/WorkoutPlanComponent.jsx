@@ -74,7 +74,7 @@ const WorkoutPlanComponent = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [plan, setPlan] = useState(null);
-  const [mode, setMode] = useState("view"); // view | create | edit
+  const [mode, setMode] = useState("view");
   const [form, setForm] = useState(emptyForm());
   const [error, setError] = useState("");
   const [pickerDay, setPickerDay] = useState(null);

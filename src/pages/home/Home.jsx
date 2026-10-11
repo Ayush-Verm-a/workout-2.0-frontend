@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
 import "../../styles/home-style.scss";
-import AddWorkoutComponent from "../../components/AddWorkoutComponent";
 import {
     Activity,
     ArrowRight,
+    CalendarDays,
     CheckCircle2,
-    ImageIcon,
     MessageSquare,
     Shield,
     Users,
@@ -14,6 +12,12 @@ import {
 import { Link } from "react-router-dom";
 
 const Home = () => {
+    const scrollToFeatures = () => {
+        document.getElementById("home-features")?.scrollIntoView({
+            behavior: "smooth",
+        });
+    };
+
     return (
         <div className="home__container">
             <section className="home__herosection">
@@ -28,9 +32,9 @@ const Home = () => {
                         with Artificial Intelligence
                     </h1>
                     <p className="herobodycopy">
-                        FitAI is your all-in-one companion. Track workouts, get
-                        personalized AI coaching, and visualize your progress
-                        with next-gen image editing tools.
+                        FitAI is your all-in-one companion. Track workouts, build
+                        a weekly plan, start live sessions in one tap, and get
+                        personalized AI coaching.
                     </p>
                     <div className="herobodybtn">
                         <Link to="/register">
@@ -38,13 +42,13 @@ const Home = () => {
                                 Start Your Journey <ArrowRight />
                             </button>
                         </Link>
-                        <button className="herobodybtn2">
+                        <button type="button" className="herobodybtn2" onClick={scrollToFeatures}>
                             Explore Features
                         </button>
                     </div>
                 </div>
             </section>
-            <section className="home__featuresection">
+            <section id="home-features" className="home__featuresection">
                 <div className="featurebody">
                     <div className="featureheading">
                         <h2>Everything you need to succeed</h2>
@@ -71,20 +75,19 @@ const Home = () => {
                             </div>
                             <h3>AI Coach</h3>
                             <p>
-                                Chat with our advanced AI assistant powered by
-                                AI. Get instant advice on form, nutrition,
-                                and recovery.
+                                Chat with our AI assistant for advice on form,
+                                nutrition, and recovery as you train.
                             </p>
                         </div>
                         <div className="featurecard featurecard3">
                             <div className="featurecardicon featurecardicon3">
-                                <ImageIcon />
+                                <CalendarDays />
                             </div>
-                            <h3>AI Studio</h3>
+                            <h3>Workout Plan</h3>
                             <p>
-                                Transform your workout photos using the "Nano
-                                Banana" image model. Edit backgrounds, add
-                                effects, and style your gym selfies.
+                                Build a weekly training plan from your exercise
+                                library, then start any day as a live workout
+                                in one click.
                             </p>
                         </div>
                     </div>
@@ -115,8 +118,8 @@ const Home = () => {
                     <div className="socialproofcardset">
                         <div className="socialproofcard">
                             <Users className="card1" />
-                            <div className="cardtext1">10k+</div>
-                            <div className="cardtext2">Active Users</div>
+                            <div className="cardtext1">You</div>
+                            <div className="cardtext2">Track your progress</div>
                         </div>
                         <div className="socialproofcard">
                             <Shield className="card2" />
@@ -128,7 +131,9 @@ const Home = () => {
             </section>
             <section className="home__footersection">
                 <h2>Ready to transform?</h2>
-                <button>Get Started for Free</button>
+                <Link to="/register">
+                    <button type="button">Get Started for Free</button>
+                </Link>
             </section>
         </div>
     );

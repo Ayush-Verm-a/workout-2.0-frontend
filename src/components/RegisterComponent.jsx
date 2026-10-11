@@ -1,24 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Activity, ArrowRight, Lock, Mail, UserIcon } from "lucide-react";
 import "../styles/login-style.scss";
 import { useDispatch, useSelector } from "react-redux";
+import { clearAuthError } from "../store/slices/userSlice";
 
 const RegisterComponent = () => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { isAuthenticated } = useSelector((store) => store.user);
+    const [submitting, setSubmitting] = useState(false);
+    const { error } = useSelector((store) => store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(clearAuthError());
+    }, [dispatch]);
+
     const handleRegister = (e) => {
         e.preventDefault();
-        const user = { name: userName, email, password };
-
-        dispatch(AuthService.register(user));
-        navigate("/login");
+        setSubmitting(true);
+        dispatch(AuthService.register({ name: userName, email, password }))
+            .then(() => navigate("/login", { replace: true }))
+            .catch(() => {})
+            .finally(() => setSubmitting(false));
     };
 
     return (
@@ -33,7 +40,8 @@ const RegisterComponent = () => {
                     <h1 className="auth-card__title">Workout App</h1>
                     <p className="auth-card__subtitle">Start your fitness journey today.</p>
                 </div>
-                <form className="auth-card__form">
+                <form className="auth-card__form" onSubmit={handleRegister}>
+                    {error && <div className="form-error">{error}</div>}
                     <div className="form-group">
                         <label>Full Name</label>
                         <div className="form-input">
@@ -43,6 +51,7 @@ const RegisterComponent = () => {
                                 value={userName}
                                 placeholder="John Doe"
                                 onChange={(e) => setUserName(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -55,6 +64,7 @@ const RegisterComponent = () => {
                                 value={email}
                                 placeholder="your@example.com"
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -67,11 +77,13 @@ const RegisterComponent = () => {
                                 value={password}
                                 placeholder="*********"
                                 onChange={(e) => setPassword(e.target.value)}
+                                required
+                                minLength={6}
                             />
                         </div>
                     </div>
-                    <button className="btn-auth" onClick={handleRegister}>
-                        Create Account
+                    <button className="btn-auth" type="submit" disabled={submitting}>
+                        {submitting ? "Creating…" : "Create Account"}
                         <ArrowRight />
                     </button>
                 </form>
@@ -79,7 +91,7 @@ const RegisterComponent = () => {
                 <div className="auth-card__footer">
                     <p className="auth-card__footer-text">
                         Already have an account?{" "}
-                        <button onClick={() => navigate("/login")}>
+                        <button type="button" onClick={() => navigate("/login")}>
                             Sign In
                         </button>
                     </p>

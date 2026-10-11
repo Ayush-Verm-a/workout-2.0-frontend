@@ -1,23 +1,34 @@
 import { Award, Mail, Shield, UserIcon } from "lucide-react";
 import "../styles/profile-style.scss";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo } from "react";
+import WorkoutService from "../services/WorkoutService";
 
 const Profile = () => {
-    const { user, isAuthenticated } = useSelector((store) => store.user);
-    const navigate = useNavigate();
+    const { user } = useSelector((store) => store.user);
+    const { workouts } = useSelector((store) => store.workout);
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(WorkoutService.getAllWorkouts());
+    }, [dispatch]);
 
-        console.log(user);
-    }, [user, isAuthenticated]);
+    const stats = useMemo(() => {
+        const total = workouts.length;
+        const uniqueDays = new Set(
+            workouts
+                .map((w) => w.date && new Date(w.date).toISOString().slice(0, 10))
+                .filter(Boolean),
+        );
+        const level = Math.max(1, Math.floor(total / 5) + 1);
+        return { total, uniqueDays: uniqueDays.size, level };
+    }, [workouts]);
 
     return (
         <div className="profile">
             <header className="profile__header">
                 <h2>My Profile</h2>
-                <p>Manage your account settings and preferences.</p>
+                <p>Your account and training snapshot.</p>
             </header>
             <div className="profile__body">
                 <div className="profile__cover">
@@ -72,9 +83,9 @@ const Profile = () => {
                                         <Award />
                                     </div>
                                     <div>
-                                        <span className="stat-card__value">5</span>
+                                        <span className="stat-card__value">{stats.total}</span>
                                         <span className="stat-card__label">
-                                            Streak Days
+                                            Workouts logged
                                         </span>
                                     </div>
                                 </div>
@@ -83,9 +94,9 @@ const Profile = () => {
                                         <Shield />
                                     </div>
                                     <div>
-                                        <span className="stat-card__value">Lvl 1</span>
+                                        <span className="stat-card__value">Lvl {stats.level}</span>
                                         <span className="stat-card__label">
-                                            Beginner
+                                            {stats.uniqueDays} active days
                                         </span>
                                     </div>
                                 </div>

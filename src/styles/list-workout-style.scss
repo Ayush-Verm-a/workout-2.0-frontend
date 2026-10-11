@@ -8,13 +8,33 @@
       line-height: 2.5rem;
       font-weight: 800;
       color: var(--text-primary);
-      margin-bottom: 2rem;
+      margin-bottom: 0;
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
   }
 
+  &__header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  &__start-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  }
+
   &__subcontainer {
-    /* Removed the wrapper border and background for the list to allow individual cards */
     display: flex;
     flex-direction: column;
   }
@@ -145,7 +165,6 @@
     background: rgba(239, 68, 68, 0.05);
     border: 1px solid transparent;
     
-    /* Make visible on mobile by default, hover on desktop */
     opacity: 1;
     visibility: visible;
     

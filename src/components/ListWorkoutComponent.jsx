@@ -1,80 +1,79 @@
 import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import WorkoutModalComponent from "./WorkoutModalComponent";
-import { useNavigate } from "react-router-dom";
-import { Calendar, Clock, Flame, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Calendar, Clock, Flame, Plus, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/list-workout-style.scss";
+import { getErrorMessage } from "../utils/errorMessage";
 
 const ListWorkoutComponent = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedWorkoutId, setSelectedWorkoutId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
 
   const { isAuthenticated } = useSelector((store) => store.user);
-  const { workouts } = useSelector((store) => store.workout);
-  console.log(workouts);
+  const { workouts, workoutsStatus, workoutsError } = useSelector(
+    (store) => store.workout,
+  );
 
   useEffect(() => {
-
-    if (!workouts || workouts.length === 0) {
-      dispatch(WorkoutService.getAllWorkouts());
-    }
+    dispatch(WorkoutService.getAllWorkouts());
   }, [dispatch, isAuthenticated]);
 
-  const getWorkouts = () => {
-    dispatch(WorkoutService.getAllWorkouts());
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-    });
-  };
-
   const deleteWorkout = (id) => {
+    setDeleteError("");
     WorkoutService.deleteWorkout(id)
-      .then((res) => {
-        getWorkouts();
+      .then(() => {
+        dispatch(WorkoutService.getAllWorkouts());
       })
       .catch((error) => {
-        console.log(error);
+        setDeleteError(getErrorMessage(error, "Could not delete workout"));
       });
   };
 
   return (
     <div className="listworkout__container">
-      <div>
+      <div className="listworkout__header-row">
         <h1>Workout History</h1>
+        <Link to="/live-workout" className="listworkout__start-link">
+          <Plus /> Start Workout
+        </Link>
       </div>
+
+      {deleteError && <div className="form-error">{deleteError}</div>}
+      {workoutsStatus === "failed" && (
+        <div className="form-error">{workoutsError}</div>
+      )}
 
       <div className="listworkout__subcontainer">
         <div className="listworkout__row listworkout__head">
-          {workouts.length == 0 ? (
+          {workoutsStatus === "loading" && workouts.length === 0 ? (
+            <div className="listworkout__noworkout">Loading workouts…</div>
+          ) : workouts.length === 0 ? (
             <div className="listworkout__noworkout">
-              No workouts logged yet. Start your journey today!
+              No workouts logged yet. Start a live session to record one.
             </div>
           ) : (
             workouts.map((workout) => (
-              <div 
-                key={workout.id} 
-                data-key={workout.id} 
+              <div
+                key={workout.id}
                 className="listworkout__workoutrow"
                 onClick={() => setSelectedWorkoutId(workout.id)}
               >
                 <div className="listworkout__workoutdata">
                   <div className="listworkout__workoutdatahead">
-                    <span>{workout.title.substring(0, 3)}</span>
+                    <span>{(workout.title || "WO").substring(0, 3)}</span>
                   </div>
 
                   <div className="listworkout__workoutdatabody">
-                    <h3 className="">{workout.title}</h3>
+                    <h3>{workout.title}</h3>
                     <div className="listworkout__workoutdatabodycontainer">
                       <span>
                         <Calendar />
-                        {new Date(workout.date).toLocaleDateString()}
+                        {workout.date
+                          ? new Date(workout.date).toLocaleDateString()
+                          : "—"}
                       </span>
                       <span>
                         <Clock />
@@ -82,7 +81,7 @@ const ListWorkoutComponent = () => {
                       </span>
                       <span>
                         <Flame />
-                        {workout.caloriedBurned} cal
+                        {workout.caloriesBurned ?? 0} cal
                       </span>
                     </div>
                   </div>
@@ -113,12 +112,3 @@ const ListWorkoutComponent = () => {
 };
 
 export default ListWorkoutComponent;
-
-{
-  /* <div
-    onClick={() => navigate(`/workouts/${workout.id}`)}
-    className="listworkout__details"
->
-    <small>❯</small>
-</div>; */
-}

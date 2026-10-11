@@ -24,7 +24,6 @@
       color: var(--text-primary);
     }
     
-    /* Recharts responsive container overrides for dark mode readability */
     .recharts-cartesian-grid-horizontal line,
     .recharts-cartesian-grid-vertical line {
       stroke: var(--border-highlight);

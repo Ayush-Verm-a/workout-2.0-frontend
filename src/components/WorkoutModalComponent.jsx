@@ -3,26 +3,32 @@ import { createPortal } from "react-dom";
 import WorkoutService from "../services/WorkoutService";
 import { X, Activity } from "lucide-react";
 import "../styles/workout-modal-style.scss";
+import { getErrorMessage } from "../utils/errorMessage";
 
 const WorkoutModalComponent = ({ workoutId, onClose }) => {
     const [workout, setWorkout] = useState(null);
     const [groupedExercises, setGroupedExercises] = useState({});
     const [stats, setStats] = useState({ sets: 0, volume: 0 });
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    useEffect(() => {
+    const loadWorkout = () => {
         setLoading(true);
+        setError("");
         WorkoutService.getWorkoutById(workoutId)
             .then((res) => {
                 setWorkout(res.data);
                 processData(res.data);
-                console.log(res.data);
                 setLoading(false);
             })
             .catch((err) => {
-                console.log(err);
+                setError(getErrorMessage(err, "Could not load workout details"));
                 setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        loadWorkout();
     }, [workoutId]);
 
     const processData = (data) => {
@@ -33,9 +39,9 @@ const WorkoutModalComponent = ({ workoutId, onClose }) => {
         if (data.sets) {
             data.sets.forEach((set) => {
                 totalSets++;
-                totalVolume += set.weight * set.reps;
+                totalVolume += (Number(set.weight) || 0) * (Number(set.reps) || 0);
 
-                const exerciseName = set.definition.name;
+                const exerciseName = set.definition?.name || "Exercise";
                 if (!groups[exerciseName]) {
                     groups[exerciseName] = [];
                 }
@@ -47,13 +53,35 @@ const WorkoutModalComponent = ({ workoutId, onClose }) => {
         setGroupedExercises(groups);
     };
 
-    if (loading || !workout) {
+    if (loading) {
         return createPortal(
-            <div className="workoutmodal__overlay">
-                <div className="workoutmodal__container" style={{ minHeight: "300px" }}>
+            <div className="workoutmodal__overlay" onClick={onClose}>
+                <div className="workoutmodal__container" style={{ minHeight: "300px" }} onClick={(e) => e.stopPropagation()}>
                     <div className="workoutmodal__loading">
                         <Activity className="animate-spin" size={48} />
                         <p>Loading details...</p>
+                    </div>
+                </div>
+            </div>,
+            document.body
+        );
+    }
+
+    if (error || !workout) {
+        return createPortal(
+            <div className="workoutmodal__overlay" onClick={onClose}>
+                <div className="workoutmodal__container" onClick={(e) => e.stopPropagation()}>
+                    <div className="workoutmodal__header">
+                        <h2>Workout details</h2>
+                        <button className="workoutmodal__closebtn" onClick={onClose}>
+                            <X size={20} />
+                        </button>
+                    </div>
+                    <div className="workoutmodal__content">
+                        <div className="form-error">{error || "Workout not found"}</div>
+                        <button type="button" className="workoutmodal__retry" onClick={loadWorkout}>
+                            Retry
+                        </button>
                     </div>
                 </div>
             </div>,
@@ -101,6 +129,9 @@ const WorkoutModalComponent = ({ workoutId, onClose }) => {
                     </div>
 
                     <div className="workoutmodal__exercises">
+                        {Object.keys(groupedExercises).length === 0 && (
+                            <p>No sets recorded for this workout.</p>
+                        )}
                         {Object.keys(groupedExercises).map((exerciseName, index) => (
                             <div key={index} className="workoutmodal__exercisegroup">
                                 <h3>{exerciseName}</h3>

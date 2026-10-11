@@ -80,6 +80,15 @@
     }
   }
 
+  &__empty {
+    color: var(--text-secondary);
+    background: var(--bg-glass);
+    border: 1px dashed var(--border-highlight);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+  }
+
   &__subheading {
     margin-bottom: 1rem;
     font-size: 1.25rem;

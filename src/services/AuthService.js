@@ -1,4 +1,3 @@
-import axios from "axios";
 import { apiClient } from "../api/axiosConfig";
 import {
   fetchUserSuccess,
@@ -9,41 +8,56 @@ import {
   logoutSuccess,
   registerSuccess,
   registerFailed,
+  authLoading,
 } from "../store/slices/userSlice";
+import { getErrorMessage } from "../utils/errorMessage";
 
 class AuthService {
-  login(credentials) {
-    // return apiClient.post("/auth/login", credentials);
-
+  bootstrap() {
     return async (dispatch) => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        dispatch(fetchUserFailed());
+        return;
+      }
+      dispatch(authLoading());
+      try {
+        const response = await apiClient.get("/users/me");
+        dispatch(fetchUserSuccess(response.data));
+      } catch {
+        localStorage.removeItem("token");
+        dispatch(fetchUserFailed());
+      }
+    };
+  }
+
+  login(credentials) {
+    return async (dispatch) => {
+      dispatch(authLoading());
       try {
         const response = await apiClient.post("/auth/login", credentials);
-        
-        const token = response.data.accessToken;
+        const token = response.data.accessToken || response.data.token;
         localStorage.setItem("token", token);
-        
-        // Immediately fetch user info to populate state fully
+
         const userResponse = await apiClient.get("/users/me");
         dispatch(fetchUserSuccess(userResponse.data));
-        
-        // Still dispatch loginSuccess as a fallback or if other sagas/reducers listen to it
-        dispatch(loginSuccess(response.data));
+        dispatch(loginSuccess());
       } catch (error) {
-        dispatch(loginFailed());
+        dispatch(loginFailed(getErrorMessage(error, "Invalid email or password")));
+        throw error;
       }
     };
   }
 
   register(user) {
-    // return apiClient.post("/auth/register", user);
-
     return async (dispatch) => {
+      dispatch(authLoading());
       try {
-        const response = await apiClient.post("/auth/register", user);
+        await apiClient.post("/auth/register", user);
         dispatch(registerSuccess());
       } catch (error) {
-        dispatch(registerFailed());
-        console.log("Register Failed");
+        dispatch(registerFailed(getErrorMessage(error, "Registration failed")));
+        throw error;
       }
     };
   }
@@ -60,16 +74,7 @@ class AuthService {
   }
 
   getCurrentUser() {
-    // return localStorage.getItem("token");
-
-    return async (dispatch) => {
-      try {
-        const response = await apiClient.get("/users/me");
-        dispatch(fetchUserSuccess(response.data));
-      } catch (error) {
-        dispatch(fetchUserFailed());
-      }
-    };
+    return this.bootstrap();
   }
 }
 
