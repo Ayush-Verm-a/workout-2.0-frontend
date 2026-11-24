@@ -43,6 +43,26 @@
       padding: 0.75rem 1rem;
     }
 
+    .exercise-library__description-field {
+      flex: 1 1 100%;
+      position: relative;
+
+      input {
+        width: 100%;
+        padding-right: 4.5rem;
+      }
+    }
+
+    .exercise-library__char-count {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
     button {
       padding: 0.75rem 1.25rem;
       border-radius: 0.75rem;
@@ -69,11 +89,18 @@
       svg {
         position: absolute;
         left: 1rem;
-        top: 0.875rem;
+        top: 50%;
+        transform: translateY(-50%);
         width: 1.25rem;
         height: 1.25rem;
-        color: var(--text-muted);
+        color: var(--text-secondary);
+        z-index: 1;
+        pointer-events: none;
         transition: color var(--transition-fast);
+      }
+
+      &:focus-within svg {
+        color: var(--accent-primary);
       }
 
       input {
@@ -93,15 +120,10 @@
           border-color: var(--accent-primary);
           box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
           background: rgba(255, 255, 255, 0.1);
-          
-          & + svg,
-          & ~ svg {
-            color: var(--accent-primary);
-          }
         }
-        
+
         &::placeholder {
-          color: var(--text-muted);
+          color: var(--text-secondary);
         }
       }
     }
@@ -187,149 +209,137 @@
   }
 }
 
+$card-accents: (
+  "green": #4ade80,
+  "blue": #60a5fa,
+  "orange": #fb923c,
+  "slate": #94a3b8,
+);
+
 .exercise-card {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  transition: all var(--transition-normal);
+  --card-accent: #94a3b8;
+
   display: flex;
   flex-direction: column;
   height: 100%;
-  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.5rem;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal),
+    border-color var(--transition-normal);
+
+  @each $name, $color in $card-accents {
+    &--#{$name} {
+      --card-accent: #{$color};
+    }
+  }
 
   &__header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.25rem;
+    align-items: flex-end;
+    min-height: 9.5rem;
+    padding: 1.5rem 1.75rem;
+    background: color-mix(in srgb, var(--card-accent) 14%, #111827);
+    border-bottom: 1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
+  }
 
-    .exercise-card__icon {
-      padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 1rem;
-      transition: all var(--transition-normal);
-      border: 1px solid var(--border-color);
+  &__labels {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
 
-      svg {
-        width: 1.75rem;
-        height: 1.75rem;
-      }
+  &__muscle {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--card-accent);
+  }
 
-      .icon-emerald { color: var(--accent-primary); }
-      .icon-orange { color: #f97316; }
-      .icon-blue { color: #3b82f6; }
-    }
+  &__category {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
 
-    .badge {
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 0.375rem 0.75rem;
-      border-radius: 9999px;
-      border: 1px solid transparent;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+  &__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--card-accent);
+    flex-shrink: 0;
+    transition: transform var(--transition-normal);
+  }
 
-      &-advanced {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border-color: rgba(239, 68, 68, 0.2);
-      }
-
-      &-beginner {
-        background: rgba(16, 185, 129, 0.1);
-        color: var(--accent-primary);
-        border-color: rgba(16, 185, 129, 0.2);
-      }
-
-      &-intermediate {
-        background: rgba(234, 179, 8, 0.1);
-        color: #eab308;
-        border-color: rgba(234, 179, 8, 0.2);
-      }
-    }
+  &__body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1.75rem;
   }
 
   &__title {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 0.5rem;
-  }
-
-  &__subtitle {
-    font-size: 0.875rem;
-    color: var(--accent-primary);
-    font-weight: 600;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    margin-bottom: 0.625rem;
   }
 
   &__description {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.625;
-    margin-bottom: 1.5rem;
     flex-grow: 1;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
   }
 
   &__footer {
     margin-top: auto;
     padding-top: 1.25rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.875rem;
+    gap: 1rem;
+    font-size: 0.9375rem;
+  }
+
+  &__footer-label {
     color: var(--text-secondary);
+  }
+
+  &__difficulty {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  &__meter {
+    display: flex;
+    gap: 0.375rem;
 
     span {
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      font-weight: 500;
+      width: 1.375rem;
+      height: 0.3125rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.12);
 
-      svg {
-        width: 1rem;
-        height: 1rem;
-        color: var(--text-muted);
+      &.is-filled {
+        background: var(--card-accent);
       }
-    }
-
-    button {
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      font-size: 0.875rem;
-      font-weight: 700;
-      transition: all var(--transition-fast);
-
-      svg {
-        width: 1rem;
-        height: 1rem;
-      }
-    }
-
-    button:hover {
-      color: var(--accent-primary);
-      transform: translateX(2px);
     }
   }
 
   &:hover {
-    background: rgba(30, 41, 59, 0.8);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--border-highlight);
     transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--card-accent) 30%, transparent);
+    box-shadow: var(--shadow-lg);
 
     .exercise-card__icon {
-      transform: scale(1.1) rotate(5deg);
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--border-highlight);
+      transform: scale(1.08) rotate(-4deg);
     }
   }
 }
@@ -341,8 +351,15 @@
     &__filters {
       flex-direction: row;
       align-items: center;
-      
+
+      .exercise-library__search-wrapper {
+        flex: 0 0 22rem;
+        min-width: 22rem;
+      }
+
       .exercise-library__categories {
+        flex: 1 1 0%;
+        min-width: 0;
         padding-bottom: 0;
       }
     }

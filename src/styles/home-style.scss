@@ -118,6 +118,7 @@
 
       .herobodybtn2 {
         width: 100%;
+        max-width: 20rem;
         padding: 1rem 2rem;
         background-color: var(--bg-glass-light);
         backdrop-filter: blur(10px);
@@ -414,6 +415,10 @@
         flex-direction: row;
         
         a {
+          width: auto;
+        }
+
+        .herobodybtn2 {
           width: auto;
         }
       }

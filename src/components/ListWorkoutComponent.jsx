@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import WorkoutModalComponent from "./WorkoutModalComponent";
-import { Link } from "react-router-dom";
+import LogWorkoutModalComponent from "./LogWorkoutModalComponent";
 import { Calendar, Clock, Flame, Plus, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/list-workout-style.scss";
@@ -11,6 +11,7 @@ const ListWorkoutComponent = () => {
   const dispatch = useDispatch();
   const [selectedWorkoutId, setSelectedWorkoutId] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
 
   const { isAuthenticated } = useSelector((store) => store.user);
   const { workouts, workoutsStatus, workoutsError } = useSelector(
@@ -36,9 +37,13 @@ const ListWorkoutComponent = () => {
     <div className="listworkout__container">
       <div className="listworkout__header-row">
         <h1>Workout History</h1>
-        <Link to="/live-workout" className="listworkout__start-link">
-          <Plus /> Start Workout
-        </Link>
+        <button
+          type="button"
+          className="listworkout__start-link"
+          onClick={() => setIsLogModalOpen(true)}
+        >
+          <Plus /> Log Workout
+        </button>
       </div>
 
       {deleteError && <div className="form-error">{deleteError}</div>}
@@ -52,7 +57,7 @@ const ListWorkoutComponent = () => {
             <div className="listworkout__noworkout">Loading workouts…</div>
           ) : workouts.length === 0 ? (
             <div className="listworkout__noworkout">
-              No workouts logged yet. Start a live session to record one.
+              No workouts logged yet. Log one manually or start a live session.
             </div>
           ) : (
             workouts.map((workout) => (
@@ -106,6 +111,9 @@ const ListWorkoutComponent = () => {
           workoutId={selectedWorkoutId}
           onClose={() => setSelectedWorkoutId(null)}
         />
+      )}
+      {isLogModalOpen && (
+        <LogWorkoutModalComponent onClose={() => setIsLogModalOpen(false)} />
       )}
     </div>
   );

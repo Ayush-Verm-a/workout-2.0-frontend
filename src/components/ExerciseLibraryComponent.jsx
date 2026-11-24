@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import WorkoutService from "../services/WorkoutService";
 import "../styles/exercise-library-style.scss";
-import { Info, Search, Trophy, Zap } from "lucide-react";
+import { Dumbbell, HeartPulse, Info, Search, Timer, Zap } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getErrorMessage } from "../utils/errorMessage";
 
@@ -16,6 +16,24 @@ const DEFAULT_MUSCLE_GROUPS = [
   "Other",
 ];
 
+const EXERCISE_CATEGORIES = ["Strength", "Cardio", "Endurance"];
+const DIFFICULTY_LEVELS = ["Beginner", "Intermediate", "Advanced"];
+const DESCRIPTION_MAX_LENGTH = 250;
+
+const CATEGORY_ICONS = {
+  Strength: Dumbbell,
+  Cardio: HeartPulse,
+  Endurance: Timer,
+};
+
+const DIFFICULTY_ACCENTS = {
+  Beginner: "blue",
+  Intermediate: "green",
+  Advanced: "orange",
+};
+
+const getAccent = (difficulty) => DIFFICULTY_ACCENTS[difficulty] || "slate";
+
 const ExerciseLibraryComponent = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +42,9 @@ const ExerciseLibraryComponent = () => {
 
   const [name, setName] = useState("");
   const [muscleGroup, setMuscleGroup] = useState("");
+  const [category, setCategory] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [description, setDescription] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -53,18 +74,27 @@ const ExerciseLibraryComponent = () => {
   const handleAdd = (e) => {
     e.preventDefault();
 
-    if (!name.trim() || !muscleGroup.trim()) {
-      setError("Please fill both fields.");
+    if (!name.trim() || !muscleGroup || !category || !difficulty) {
+      setError("Please fill name, muscle group, category and difficulty.");
       return;
     }
 
     setSaving(true);
     setError("");
-    WorkoutService.saveDefinition({ name: name.trim(), muscleGroup: muscleGroup.trim() })
+    WorkoutService.saveDefinition({
+      name: name.trim(),
+      muscleGroup,
+      category,
+      difficulty,
+      description: description.trim().slice(0, DESCRIPTION_MAX_LENGTH),
+    })
       .then(() => {
         setMessage("Exercise added successfully!");
         setName("");
         setMuscleGroup("");
+        setCategory("");
+        setDifficulty("");
+        setDescription("");
         dispatch(WorkoutService.getDefinitions());
         setTimeout(() => setMessage(""), 3000);
       })
@@ -99,6 +129,37 @@ const ExerciseLibraryComponent = () => {
             </option>
           ))}
         </select>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="">Category</option>
+          {EXERCISE_CATEGORIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <option value="">Difficulty</option>
+          {DIFFICULTY_LEVELS.map((level) => (
+            <option key={level} value={level}>
+              {level}
+            </option>
+          ))}
+        </select>
+        <div className="exercise-library__description-field">
+          <input
+            type="text"
+            placeholder="Description (optional)"
+            maxLength={DESCRIPTION_MAX_LENGTH}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <span className="exercise-library__char-count">
+            {description.length}/{DESCRIPTION_MAX_LENGTH}
+          </span>
+        </div>
         <button type="submit" disabled={saving}>
           {saving ? "Adding…" : "Add"}
         </button>
@@ -131,28 +192,58 @@ const ExerciseLibraryComponent = () => {
       </div>
 
       <div className="exercise-library__grid">
-        {filteredExercises.map((exercise) => (
-          <div key={exercise.id} className="exercise-card">
-            <div className="exercise-card__header">
-              <div className="exercise-card__icon">
-                <Zap className="icon-emerald" />
+        {filteredExercises.map((exercise) => {
+          const CategoryIcon = CATEGORY_ICONS[exercise.category] || Zap;
+          const level = DIFFICULTY_LEVELS.indexOf(exercise.difficulty) + 1;
+
+          return (
+            <div
+              key={exercise.id}
+              className={`exercise-card exercise-card--${getAccent(exercise.difficulty)}`}
+            >
+              <div className="exercise-card__header">
+                <div className="exercise-card__labels">
+                  <span className="exercise-card__muscle">
+                    {exercise.muscleGroup || "General"}
+                  </span>
+                  {exercise.category && (
+                    <span className="exercise-card__category">
+                      {exercise.category}
+                    </span>
+                  )}
+                </div>
+                <CategoryIcon className="exercise-card__icon" />
               </div>
-              <span className="badge badge-beginner">
-                {exercise.muscleGroup}
-              </span>
+
+              <div className="exercise-card__body">
+                <h3 className="exercise-card__title">{exercise.name}</h3>
+                <p className="exercise-card__description">
+                  {exercise.description ||
+                    "Add this movement to a plan or live session."}
+                </p>
+
+                <div className="exercise-card__footer">
+                  <span className="exercise-card__footer-label">Difficulty</span>
+                  <div className="exercise-card__difficulty">
+                    <div
+                      className="exercise-card__meter"
+                      role="img"
+                      aria-label={`Difficulty: ${exercise.difficulty || "Not set"}`}
+                      title={exercise.difficulty || "Not set"}
+                    >
+                      {DIFFICULTY_LEVELS.map((lvl, i) => (
+                        <span
+                          key={lvl}
+                          className={i < level ? "is-filled" : ""}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h3 className="exercise-card__title">{exercise.name}</h3>
-            <p className="exercise-card__subtitle">{exercise.muscleGroup}</p>
-            <p className="exercise-card__description">
-              {exercise.description || "Add this movement to a plan or live session."}
-            </p>
-            <div className="exercise-card__footer">
-              <span>
-                <Trophy /> {exercise.muscleGroup}
-              </span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {filteredExercises.length === 0 && (
